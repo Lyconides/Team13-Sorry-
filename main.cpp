@@ -36,14 +36,14 @@ int main()
 {
 	srand(time(0)); // seeding the randomizer.
 
-	/*
+	
 	for (int i = 0; i < ::LEN; i++) // prints on extra character
 	{
 		std::cout << cardGet() << std::endl;
 		if (i == 45)
 			std::cout << "\n-----------------------" << std::endl;
 	}
-	*/
+	
 
 	system("pause");
 	return 0;
