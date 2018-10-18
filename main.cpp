@@ -35,25 +35,7 @@ int cardGet() // cardGet2 optimized
 int main()
 {
 	srand(time(0)); // seeding the randomizer.
-	
-	for (int i = 0; i < ::LEN; i++) // prints on extra character
-	{
-		std::cout << cardGet() << std::endl;
-		if (i == 45)
-			std::cout << "\n-----------------------" << std::endl;
-	}
-<<<<<<< Updated upstream
-	// Hello World
-	std::cout << "Tester 1" << std::endl;
-=======
-<<<<<<< HEAD
-	
-	// Hello World
-=======
-	std::cout << "Tester 1" << std::endl;
 
->>>>>>> Text_Display
->>>>>>> Stashed changes
 	system("pause");
 	return 0;
 }
