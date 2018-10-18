@@ -35,7 +35,6 @@ int cardGet() // cardGet2 optimized
 int main()
 {
 	srand(time(0)); // seeding the randomizer.
-
 	
 	for (int i = 0; i < ::LEN; i++) // prints on extra character
 	{
