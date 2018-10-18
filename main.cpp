@@ -42,8 +42,18 @@ int main()
 		if (i == 45)
 			std::cout << "\n-----------------------" << std::endl;
 	}
+<<<<<<< Updated upstream
+	// Hello World
+	std::cout << "Tester 1" << std::endl;
+=======
+<<<<<<< HEAD
+	
+	// Hello World
+=======
+	std::cout << "Tester 1" << std::endl;
 
-
+>>>>>>> Text_Display
+>>>>>>> Stashed changes
 	system("pause");
 	return 0;
 }
