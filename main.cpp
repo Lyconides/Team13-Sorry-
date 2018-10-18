@@ -42,7 +42,7 @@ int main()
 		if (i == 45)
 			std::cout << "\n-----------------------" << std::endl;
 	}
-	
+	std::cout << "Tester 1" << std::endl;
 
 	system("pause");
 	return 0;
