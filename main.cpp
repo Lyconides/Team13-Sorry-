@@ -7,6 +7,7 @@ References: Cplusplus.com - random_shuffle(http://www.cplusplus.com/reference/al
 */
 
 // GAME DEVELOPMENT WORKSHOP - PROJECT 2
+#include "Tokens.h"
 
 #include <iostream>
 #include <random>
