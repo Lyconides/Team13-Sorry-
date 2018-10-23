@@ -25,14 +25,16 @@ void rules(int m) // prints the rules for the game.
 	switch (m)
 	{
 		case 1:
-			std::cout << "RULES OF THE BOARDGAME SORRY!" << std::endl;
+			std::cout << "\nRULES OF THE BOARDGAME SORRY!\n" << std::endl;
+
+			std::cout << "\'Sorry!\' is a 2-4 player game where your job is to get all 4 of your colour of pawns from their starting zone to their home zone as fast as possible." << std::endl;
 			break;
 		case 2:
-			std::cout << "RULES OF PROGRAM SORRY (FULL)!" << std::endl;
+			std::cout << "\nRULES OF PROGRAM SORRY (FULL)!\n" << std::endl;
 			break;
 		case 3:
 		default:
-			std::cout << "RULES OF PROGRAM SORRY (SHORT)" << std::endl;
+			std::cout << "\nRULES OF PROGRAM SORRY (SHORT)\n" << std::endl;
 
 	}
 
@@ -92,7 +94,7 @@ int main()
 		}
 		else if (input == "4")
 		{
-			std::cout << "Printing the rules of Sorry!, and the rules of the program.\n" << std::endl;
+			std::cout << "Printing the rules of Sorry!, and the rules of the program." << std::endl;
 			rules(1);
 			rules(2);
 		}
