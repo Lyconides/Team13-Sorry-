@@ -3,9 +3,9 @@
 class TokenClass {
 public:
 	int Player;
-	bool Start
-	bool SafeZone
-	bool Home
+	bool Start;
+	bool SafeZone;
+	bool Home;
 	int Location;
 
 	TokenClass(int p) {
