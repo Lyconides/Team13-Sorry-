@@ -20,7 +20,7 @@ static unsigned short int ary[LEN] = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4,
 
 int cardGet();
 void rules(int);
-void game();
+void game(const short int);
 
 void rules(int m) // prints the rules for the game.
 {
@@ -57,16 +57,16 @@ int cardGet() // cardGet2 optimized
 	return ::ary[index - 1]; // index is added to before being sent back, so index - 1 is used for what needs to be returned.
 }
 
-void game()
+void game(const short int pTotal)
 {
-
+	int plyr(1);
 }
 
 // int sorry()
 int main()
 {
-	std::string input;
-	unsigned short int pNum(0);
+	std::string input; // user input
+	unsigned short int pTotal(0); // the total number of players
 
 	srand(time(0)); // seeding the randomizer.
 
@@ -115,12 +115,12 @@ int main()
 	} while (input == "");
 
 
-	do
+	do // Setting the player number
 	{
 		std::cout << "Now that we have gotten the rules out of the way, I must ask you, how many people are playing? This game supports 2-4 players, so enter the amount of people playing:" << std::endl;
 		std::cout << "Players: ";
 
-		if (!(std::cin >> pNum)) // checks to see if a valid character was given
+		if (!(std::cin >> pTotal)) // checks to see if a valid character was given
 		{
 			std::cout << "\nInvalid. Go Again.\n" << std::endl;
 			
@@ -128,18 +128,24 @@ int main()
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-			pNum = 0;
+			pTotal = 0;
 			continue;
 		}
-		if (pNum < 2 || pNum > 4) // if the player number is greater than or less than the range stated.
+		if (pTotal < 2 || pTotal > 4) // if the player number is greater than or less than the range stated.
 		{
 			std::cout << "\nThis game only supports 2-4 players. Try again.\n" << std::endl;
-			pNum = 0;
+			pTotal = 0;
 			continue;
 		}
 
-	} while (pNum == 0);
+	} while (pTotal == 0);
 
+	std::cout << "\nPlayers Set! Starting Game..." << std::endl;
+	std::cout << "" << std::endl;
+
+	game(pTotal); // game Loop
+
+	std::cout << "\nThankyou for playing our game." << std::endl;
 	system("pause");
 	return 0;
 }
