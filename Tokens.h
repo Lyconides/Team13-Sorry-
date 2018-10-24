@@ -1,8 +1,10 @@
 #pragma once
+#include "BoardSpaces.h"
 //reference: https://www.geeksforgeeks.org/c-classes-and-objects/
 class TokenClass {
 public:
 	int Player;
+	BoardSpace Pbs;
 	bool Start;
 	bool SafeZone;
 	bool Home;
@@ -10,6 +12,7 @@ public:
 
 	TokenClass(int p) {
 		Player = p;
+		Pbs(p);
 		setStart(true);
 		setSafeZone(false);
 		setHome(false);

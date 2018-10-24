@@ -1,7 +1,7 @@
 #pragma once
 #include
 
-struct BoardSpaces
+struct BoardSpace
 {
 public:
 	int Start(4);
@@ -9,7 +9,7 @@ public:
 	int SafetyZone[5];
 	int Home(0);
 
-	BoardSpaces(int player) {
+	BoardSpace(int player) {
 		switch(player)
 			case 1:
 				StartSpace = 4;
