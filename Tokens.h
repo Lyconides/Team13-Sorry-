@@ -12,7 +12,7 @@ public:
 
 	TokenClass(int p) {
 		Player = p;
-		Pbs(p);
+		// Pbs(p);
 		setStart(true);
 		setSafeZone(false);
 		setHome(false);
@@ -47,4 +47,4 @@ public:
 		return Player;
 	}
 
-}
+};
