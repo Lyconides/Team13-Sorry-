@@ -4,7 +4,7 @@
 class TokenClass {
 public:
 	int Player;
-	BoardSpace Pbs;
+	BoardSpaces Pbs;
 	bool Start;
 	bool SafeZone;
 	bool Home;

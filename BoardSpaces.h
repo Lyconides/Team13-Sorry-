@@ -1,17 +1,18 @@
 #pragma once
-/*
+
 // #include
 
 struct BoardSpace
 {
 public:
-	int Start(4);
+	int Start(int);
 	int StartSpace;
 	int SafetyZone[5];
-	int Home(0);
+	int Home(int);
 
 	BoardSpace(int player) {
-		switch(player)
+		switch (player)
+		{
 			case 1:
 				StartSpace = 4;
 				break;
@@ -24,6 +25,7 @@ public:
 			case 4:
 				StartSpace = 49;
 				break;
+		}
 	}
 };
-*/
+
