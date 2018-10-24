@@ -20,7 +20,7 @@ static unsigned short int ary[LEN] = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4,
 
 int cardGet();
 void rules(int);
-void game(const short int);
+std::string game(const short int);
 
 void rules(int m) // prints the rules for the game.
 {
@@ -80,7 +80,6 @@ void rules(int m) // prints the rules for the game.
 			break;
 		default:
 			return;
-
 	}
 
 }
@@ -100,9 +99,13 @@ int cardGet() // cardGet2 optimized
 	return ::ary[index - 1]; // index is added to before being sent back, so index - 1 is used for what needs to be returned.
 }
 
-void game(const short int pTotal)
+std::string game(const short int pTotal) // the game loop.
 {
-	int plyr(1);
+	int plyr(1); // the current player
+	std::string rank(""); // the place each player comes in. When a player wins, their number is added to the 'place' string.
+	
+
+	return rank; // returns the order the players came in
 }
 
 // int sorry()
@@ -110,6 +113,7 @@ int main()
 {
 	std::string input; // user input
 	unsigned short int pTotal(0); // the total number of players
+	std::string rank; // the place each person comes in.
 
 	srand(time(0)); // seeding the randomizer.
 
@@ -184,11 +188,40 @@ int main()
 	} while (pTotal == 0);
 
 	std::cout << "\nPlayers Set! Starting Game..." << std::endl;
-	std::cout << "" << std::endl;
 
-	game(pTotal); // game Loop
+	do
+	{
+		rank = game(pTotal); // game Loop
 
-	std::cout << "\nThankyou for playing our game." << std::endl;
+		for (int i = 0; i < rank.length(); i++)
+		{
+			std::cout << std::endl;
+			std::cout << i << ") Player " << rank[i];
+
+			/*
+			switch (rank.at[i]) // adding the colour corresponding to the player
+			{
+				case '1':
+					std::cout << " (Red)";
+					break;
+				case '2':
+					std::cout << "(Blue)";
+					break;
+				case '3':
+					std::cout << "(Yellow)";
+					break;
+				case '4':
+					std::cout << "(Green)";
+					break;
+			}
+			*/
+			std::cout << std::endl;
+		}
+
+	} while (input == "");
+	
+
+	std::cout << "\nThank You for playing our game." << std::endl;
 	system("pause");
 	return 0;
 }
