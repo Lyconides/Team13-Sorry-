@@ -27,16 +27,59 @@ void rules(int m) // prints the rules for the game.
 	switch (m)
 	{
 		case 1:
-			std::cout << "\nRULES OF THE BOARDGAME SORRY!\n" << std::endl;
+			std::cout << "\nRULES OF THE BOARDGAME SORRY!\n*************************************" << std::endl;
+			std::cout << "Here is a general explanation of how the boardgame \'Sorry!\' works." << std::endl;
 
-			std::cout << "\'Sorry!\' is a 2-4 player game where your job is to get all 4 of your colour of pawns from their starting zone to their home zone as fast as possible." << std::endl;
+			std::cout << "\nGeneral\n-----------------" << std::endl;
+			std::cout << "\'Sorry!\' is a 2-4 player game where your job is to get all 4 of your colour of pawns from their starting zone to their home zone as fast as possible. " << std::endl;
+			std::cout << "Ideally, you want to get there before anyone else, but the game can continue until all but one of the players make it to the end. \n" << std::endl;
+
+			std::cout << "In order to make your pawns move, you must utilize the card that you draw." << std::endl;
+			std::cout << "There are 11 possible cards you can draw: cards numbered 1 - 12 (with 6 and 9 excluded), or a Sorry! card. There are 5 \'1\' cards and 4 of each other type, totaling to 45 cards." << std::endl;
+			std::cout << "The numbered cards all denote how many spaces you can move, but some of the cards have additional uses that will be discussed later." << std::endl;
+			std::cout << "Two pawns cannot share the same space, so if a move would put a pawn on the same tile as an enemy pawn, said enemy pawn would be taken back to their \"START\" space (will be explained later). \n" << std::endl;
+			
+			std::cout << "If a move would put two pawns of the same colour on the same tile, the move cannot be used. If there are no legal moves, the player's turn is skipped. " << std::endl;
+			std::cout << "On the board there are generic tiles, along with \"SLIDE\" spaces, \"SAFETY\" spaces, a \"START\" zone, and a \"HOME\" zone. These will be explained below, along with the cards." << std::endl;
+			
+			std::cout << "\n------------------------------------------\nSpecial Tiles\n-----------------" << std::endl;
+			std::cout << "START: the starting area for a pawn. Each pawn must begin in the \"START\" area that shares their same colour. To move out of the starting zone a 1, 2, or Sorry! card is need." << std::endl;
+			std::cout << "HOME: the ending area for a pawn.A pawn's objective is to get to the home zone that corresponds with their colour." << std::endl;
+			std::cout << "SAFETY : a tile that can only be used by a pawn that has the same colour as it.As the same suggests, pawns here are uneffected by certain card uses." << std::endl;
+			std::cout << "SLIDE: if a pawn lands at the start of a slide that is not of their own colour, they are shifted to the end of it, sending all pawns they pass back to their starting areas." << std::endl;
+			
+			std::cout << "\n------------------------------------------\nCard Mechanics\n-----------------" << std::endl;
+			std::cout << "1: move 1 space, or move 1 space off of the \"START\" tile" << std::endl;
+			std::cout << "2: move 1 space, move 1 space off of the \"START\" tile. Also allows the player to draw another card, even if the '2' card could not be used." << std::endl;
+			std::cout << "3: move 3 spaces forward" << std::endl;
+			std::cout << "4: move 4 spaces backward" << std::endl;
+			std::cout << "5: move 5 spaces forward" << std::endl;
+			std::cout << std::endl;
+			std::cout << "7: move 7 spaces forward, or split the 7 spaces across two pawns (7 spaces total must be moved). A '7' card cannot be used to move backwards and cannot be used to move a pawn move off of \"START\"." << std::endl;
+			std::cout << "8: move 8 spaces forward" << std::endl;
+			std::cout << "10: move 10 spaces forward, or move on space back. If no pawns can be moved 10 spaces forward, you must move a pawn 1 space back." << std::endl;
+			std::cout << "11: move 11 spaces forward, or swap places with an opponent's pawn. You cannot switch a pawn that is in its designated \"START\", \"SAFETY\", or \"HOME\" zone." << std::endl;
+			std::cout << "12: move 12 spaces forward" << std::endl;
+			std::cout << std::endl;
+			std::cout << "Sorry!: take a pawn from your \"START\" space and move it to a tile occupied by an opponent's pawn. This makes the opponent's pawn go back to start." << std::endl;
+			std::cout << "\t-the player has no pawns in their \"START\" zone, or all of the opponent's pawns are in their \"START\", \"SAFETY\", or \"HOME\", all pawns stay where they are." << std::endl;
+
+			std::cout << "_____________________________________________________________________________" << std::endl;
 			break;
 		case 2:
-			std::cout << "\nRULES OF PROGRAM SORRY (FULL)!\n" << std::endl;
+			std::cout << "\nMECHANICS OF THE PROGRAM\n*************************************\n" << std::endl;
+			std::cout << "Here are the list of significant differences from the board game \'Sorry!\', and our text-based version." << std::endl;
+
+			std::cout << "\t-Each player has a set colour. Player 1 is Red, Player 2 is Blue, Player 3 is Yellow, and Player 4 is Green." << std::endl;
+			std::cout << "\t-The pawns will be displayed on the board and automatically moved once the move has been made." << std::endl;
+			std::cout << "\t-The cards will be randomly drawn at the start of each turn, and automatically reshuffled once all 45 cards have been used." << std::endl;
+			std::cout << "\t-Once the card is drawn, the player will select the pawn and available movement options will be displayed." << std::endl;
+
+			std::cout << "_____________________________________________________________________________" << std::endl;
+
 			break;
-		case 3:
 		default:
-			std::cout << "\nRULES OF PROGRAM SORRY (SHORT)\n" << std::endl;
+			return;
 
 	}
 
