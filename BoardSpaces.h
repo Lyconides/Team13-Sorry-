@@ -1,5 +1,6 @@
 #pragma once
-#include
+/*
+// #include
 
 struct BoardSpace
 {
@@ -25,3 +26,4 @@ public:
 				break;
 	}
 };
+*/

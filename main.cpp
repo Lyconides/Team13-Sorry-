@@ -102,8 +102,31 @@ int cardGet() // cardGet2 optimized
 std::string game(const short int pTotal) // the game loop.
 {
 	int plyr(1); // the current player
+	short int card(0); // the current card
 	std::string rank(""); // the place each player comes in. When a player wins, their number is added to the 'place' string.
 	
+	while (rank.length() < pTotal)
+	{
+		// printing the board
+		do
+		{
+			card = cardGet(); // getting the current player's card
+			std::cout << std::endl;
+			(card == 13) ? std::cout << "You got a \'Sorry!\' Card!" << std::endl : std::cout << "You got a \'" << card << "\' card!" << std::endl; // printing out the card the user got
+		
+		} while (card == 2); // accounts for situations when the player pulls another card
+
+		system("pause");
+		if (plyr < pTotal) // changing the player number
+		{
+			plyr++;
+		}
+		else if(plyr == pTotal) // going back to player 1 once all players have gone that given round
+		{
+			plyr = 1;
+		}
+		
+	}
 
 	return rank; // returns the order the players came in
 }
