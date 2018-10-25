@@ -9,6 +9,13 @@ public:
 	bool Home;
 	int Location;
 
+	TokenClass() {
+		setStart(true);
+		setSafeZone(false);
+		setHome(false);
+		setLocation(0);
+	}
+
 	TokenClass(int p) {
 		Player = p;
 		setStart(true);
@@ -28,6 +35,9 @@ public:
 	}
 	void setLocation(int space) {
 		Location = space;
+	}
+	void setPlayer(int p) {
+		Player = p;
 	}
 
 	bool getStart() {
