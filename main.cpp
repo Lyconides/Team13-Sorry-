@@ -1,6 +1,6 @@
 /*
 Names: Angus Wai (100719558), Jason Lee (100698121), Jiminy Cao (100701335), Roderick “R.J.” Montague (100701758), Ulric Miller (100693403)
-Date: 10/17/2018
+Date: 10/25/2018
 References: Cplusplus.com - random_shuffle(http://www.cplusplus.com/reference/algorithm/random_shuffle/), Stackoverflow.com - "Is it possible to random shuffle an array of int elements" (https://stackoverflow.com/questions/14720134/is-it-possible-to-random-shuffle-an-array-of-int-elements)
 		> Cplusplus.com - toupper(http://www.cplusplus.com/reference/cctype/toupper/)
 
@@ -71,7 +71,7 @@ void rules(int m) // prints the rules for the game.
 			std::cout << "Here are the list of significant differences from the board game \'Sorry!\', and our text-based version." << std::endl;
 
 			std::cout << "\t-Each player has a set colour. Player 1 is Red, Player 2 is Blue, Player 3 is Yellow, and Player 4 is Green." << std::endl;
-			std::cout << "\t-The pawns will be displayed on the board and automatically moved once the move has been made." << std::endl;
+			std::cout << "\t-The board will be printed to the screen and the locations of all pawns (tokens) will be posted." << std::endl;
 			std::cout << "\t-The cards will be randomly drawn at the start of each turn, and automatically reshuffled once all 45 cards have been used." << std::endl;
 			std::cout << "\t-Once the card is drawn, the player will select the pawn and available movement options will be displayed." << std::endl;
 
