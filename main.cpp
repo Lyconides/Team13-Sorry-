@@ -2,12 +2,13 @@
 Names: Angus Wai (100719558), Jason Lee (100698121), Jiminy Cao (100701335), Roderick “R.J.” Montague (100701758), Ulric Miller (100693403)
 Date: 10/25/2018
 References: Cplusplus.com - random_shuffle(http://www.cplusplus.com/reference/algorithm/random_shuffle/), Stackoverflow.com - "Is it possible to random shuffle an array of int elements" (https://stackoverflow.com/questions/14720134/is-it-possible-to-random-shuffle-an-array-of-int-elements)
-		> Cplusplus.com - toupper(http://www.cplusplus.com/reference/cctype/toupper/)
+		> Cplusplus.com - toupper(http://www.cplusplus.com/reference/cctype/toupper/), TutorialsPoint.com - Dynamic Memory (https://www.tutorialspoint.com/cplusplus/cpp_dynamic_memory.htm)
 
 */
 
 // GAME DEVELOPMENT WORKSHOP - PROJECT 2
-// #include "Tokens.h"
+#include "Tokens.h"
+#include "Board.h"
 
 #include <iostream>
 #include <random>
@@ -105,10 +106,32 @@ std::string game(const short int pTotal) // the game loop.
 	short int card(0); // the current card
 	std::string rank(""); // the place each player comes in. When a player wins, their number is added to the 'place' string.
 	
-	while (rank.length() < pTotal)
+	// Making an object of player pieces
+	TokenClass token = TokenClass(1);
+
+	int * test = new int[1000];
+	// int * test2 = new int{ {1, 2, 3}, {1, 2, 3} };
+	// TokenClass * pawns = new TokenClass[pTotal][4];
+	// TokenClass * pawns = new TokenClass[pTotal];
+	// TokenClass * pawns = {new TokenClass}
+
+	//Token.getLocation to get the placement of the pawn on the board
+	// works: TokenClass tokens[2][2] = { {1 ,1 },{ 1 ,1 } };
+	// TokenClass * tokens[2][2]= { { nullptr, nullptr} };
+	// TokenClass * tokens [1][4]= { {new TokenClass(1), new TokenClass(1), new TokenClass(1), new TokenClass(1)}};
+	
+	// TokenClass * x[2][2];
+	// TokenClass * tokens = {1}
+	//TokenClass * tokens = [4][4]{ {TokenClass(1), TokenClass(1),TokenClass(1), TokenClass(1)}, 
+	//												 {TokenClass(2), TokenClass(2),TokenClass(2), TokenClass(2)}, 
+	//												 {TokenClass(3), TokenClass(3),TokenClass(3), TokenClass(3)},
+	//												 {TokenClass(4), TokenClass(4),TokenClass(4), TokenClass(4)}}; // creates an array of token objects with a size proportional to how many people are playing.
+
+	while (rank.length() < pTotal) // main game loop
 	{
-		// printing the board
-		do
+		board::boardPrint(); // printing the board.
+
+		do // card question loop
 		{
 			card = cardGet(); // getting the current player's card
 			std::cout << std::endl;
