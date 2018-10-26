@@ -4,18 +4,24 @@
 class TokenClass {
 public:
 	int Player;
-	// BoardSpaces Pbs;
 	bool Start;
 	bool SafeZone;
 	bool Home;
 	int Location;
 
-	TokenClass(int p) {
-		Player = p;
-		// Pbs(p);
+	TokenClass() {
 		setStart(true);
 		setSafeZone(false);
 		setHome(false);
+		setLocation(0);
+	}
+
+	TokenClass(int p) {
+		Player = p;
+		setStart(true);
+		setSafeZone(false);
+		setHome(false);
+		setLocation(0);
 	}
 
 	void setStart(bool start){
@@ -29,6 +35,9 @@ public:
 	}
 	void setLocation(int space) {
 		Location = space;
+	}
+	void setPlayer(int p) {
+		Player = p;
 	}
 
 	bool getStart() {
