@@ -72,7 +72,8 @@ void rules(int m) // prints the rules for the game.
 			std::cout << "Here are the list of significant differences from the board game \'Sorry!\', and our text-based version." << std::endl;
 
 			std::cout << "\t-Each player has a set colour. Player 1 is Red, Player 2 is Blue, Player 3 is Yellow, and Player 4 is Green." << std::endl;
-			std::cout << "\t-The board will be printed to the screen and the locations of all pawns (tokens) will be posted." << std::endl;
+			std::cout << "\t-The player that goes first is random, but it will always go in this order: Player 1 > Player 2 > Player 3 > Player 4." << std::endl;
+			std::cout << "\t-The board will be printed to the screen and the locations of all pawns (tokens) will be shown in a list." << std::endl;
 			std::cout << "\t-The cards will be randomly drawn at the start of each turn, and automatically reshuffled once all 45 cards have been used." << std::endl;
 			std::cout << "\t-Once the card is drawn, the player will select the pawn and available movement options will be displayed." << std::endl;
 
@@ -102,56 +103,72 @@ int cardGet() // cardGet2 optimized
 
 std::string game(const short int pTotal) // the game loop.
 {
-	int plyr(1); // the current player
+	int plyr(rand() % pTotal + 1); // the current player
+	const short int tknAmnt(4); // the amount of tokens each player has.
+
 	short int card(0); // the current card
 	std::string rank(""); // the place each player comes in. When a player wins, their number is added to the 'place' string.
 	
 	// Making an object of player pieces
 	TokenClass token = TokenClass(1);
 
-	int * test = new int[1000];
-	// int * test2 = new int{ {1, 2, 3}, {1, 2, 3} };
-	// TokenClass * pawns = new TokenClass[pTotal][4];
-	// TokenClass * pawns = new TokenClass[pTotal];
-	// TokenClass * pawns = {new TokenClass}
+	// int * test = new int[3];
+	// test[3] = new int[3];
 
-	//Token.getLocation to get the placement of the pawn on the board
-	// works: TokenClass tokens[2][2] = { {1 ,1 },{ 1 ,1 } };
-	// TokenClass * tokens[2][2]= { { nullptr, nullptr} };
-	// TokenClass * tokens [1][4]= { {new TokenClass(1), new TokenClass(1), new TokenClass(1), new TokenClass(1)}};
+	// creating a 2D dynamic array to store the player variables
+	TokenClass ** tokens = new TokenClass * [pTotal]; // creating a 1D pointer array of pointers
+	for (int i = 0; i < pTotal; i++) // filling those secondary points with objects of type TokenClass
+		tokens[i] = new TokenClass [tknAmnt];
+
 	
-	// TokenClass * x[2][2];
-	// TokenClass * tokens = {1}
-	//TokenClass * tokens = [4][4]{ {TokenClass(1), TokenClass(1),TokenClass(1), TokenClass(1)}, 
-	//												 {TokenClass(2), TokenClass(2),TokenClass(2), TokenClass(2)}, 
-	//												 {TokenClass(3), TokenClass(3),TokenClass(3), TokenClass(3)},
-	//												 {TokenClass(4), TokenClass(4),TokenClass(4), TokenClass(4)}}; // creates an array of token objects with a size proportional to how many people are playing.
+	for (int i = 0; i < pTotal; i++)
+		for (int j = 0; j < tknAmnt; j++)
+			tokens[i][j] = TokenClass(i + 1); // filling each space with a player number.
+	
+	// The layout for the tokens array is as follows: { {1, 1, 1, 1}, {2, 2, 2, 2}, {3, 3, 3, 3}, {4, 4, 4, 4} }
 
 	while (rank.length() < pTotal) // main game loop
 	{
-		board::boardPrint(); // printing the board.
-
-		do // card question loop
+		// rank = "1243";
+		if (rank.find(std::to_string(plyr)) != std::string::npos) { // if the player's number is found in the rank variable, it means all of their pawns are at "HOME"
+			std::cout << "\nPlayer " << plyr << "\'s pieces are all in the \'HOME\' zone.\n" << std::endl;
+		}
+		else
 		{
-			card = cardGet(); // getting the current player's card
-			std::cout << std::endl;
-			(card == 13) ? std::cout << "You got a \'Sorry!\' Card!" << std::endl : std::cout << "You got a \'" << card << "\' card!" << std::endl; // printing out the card the user got
-		
-		} while (card == 2); // accounts for situations when the player pulls another card
+			board::boardPrint(); // printing the board.
+			// rank = "3421";
 
+			do // card question loop. A '2' allows the player to pull another card, which is what this loop checks.
+			{
+				std::cout << "It is Player " << plyr << "\'s Turn.\n" << std::endl;
+				card = cardGet(); // getting the current player's card
+				(card == 13) ? std::cout << "You got a \'Sorry!\' Card!" << std::endl : std::cout << "You got a \'" << card << "\' card!" << std::endl; // printing out the card the user got
+
+				// calling the card function to do the movements.
+
+				// checking to see if that move got all of the player's pawns in the home zone.
+				if (tokens[plyr - 1][0].getHome() == true && tokens[plyr - 1][1].getHome() == true && tokens[plyr - 1][2].getHome() == true && tokens[plyr - 1][3].getHome() == true)
+				{
+					rank += std::to_string(plyr); // adds the player number to the 'rank' string, which lists who won, and in what order.
+				}
+
+			} while (card == 2); // accounts for situations when the player pulls another card
+		}
+		
 		system("pause");
 		if (plyr < pTotal) // changing the player number
 		{
 			plyr++;
 		}
-		else if(plyr == pTotal) // going back to player 1 once all players have gone that given round
+		else if(plyr >= pTotal) // going back to player 1 once all players have gone that given round
 		{
 			plyr = 1;
 		}
 		
 	}
 
-	return rank; // returns the order the players came in
+	std::cout << "\nThe game has ended, here are the results!\n" << std::endl;
+	return rank; // returns the order the players finished in
 }
 
 // int sorry()
@@ -207,6 +224,7 @@ int main()
 
 	} while (input == "");
 
+	std::cout << std::endl;
 
 	do // Setting the player number
 	{
@@ -238,36 +256,41 @@ int main()
 	do
 	{
 		rank = game(pTotal); // game Loop
-
+		// rank = "4213";
+		
+		std::cout << "\nEnding Standings\n---------------" << std::endl; // printing the ending standings
 		for (int i = 0; i < rank.length(); i++)
 		{
-			std::cout << std::endl;
-			std::cout << i << ") Player " << rank[i];
-
-			/*
-			switch (rank.at[i]) // adding the colour corresponding to the player
-			{
-				case '1':
-					std::cout << " (Red)";
-					break;
-				case '2':
-					std::cout << "(Blue)";
-					break;
-				case '3':
-					std::cout << "(Yellow)";
-					break;
-				case '4':
-					std::cout << "(Green)";
-					break;
-			}
-			*/
-			std::cout << std::endl;
+			std::cout << i + 1 << ") Player " << rank[i] << std::endl;
 		}
 
+		// Asking the user(s) if they want to play again.
+		do
+		{
+			std::cout << "\nWould you all like to play again? Enter \'1\' for yes, or \'0\' for no." << std::endl;
+			std::cout << "Decision: ";
+			std::getline(std::cin, input);
+
+			if (input == "1" || input == "y" || input == "Y" || input == "yes" || input == "YES" || input == "Yes") // they want to play again
+			{
+				std::cout << "Very well. The game will now end." << std::endl;
+				input = "";
+			}
+			else if (input == "0" || input == "n" || input == "N" || input == "no" || input == "NO" || input == "No") // the person doesn't want to play again
+			{
+				std::cout << "Very well. The game will now end." << std::endl;
+			}
+			else // unusable input
+			{
+				std::cout << "Invalid Input. You all will be prompted again for a decision." << std::endl;
+				input = "Inquisition";
+			}
+		} while (input == "Inquisition");
+		
 	} while (input == "");
 	
 
-	std::cout << "\nThank You for playing our game." << std::endl;
+	std::cout << "\nThank you for playing our game." << std::endl;
 	system("pause");
 	return 0;
 }
