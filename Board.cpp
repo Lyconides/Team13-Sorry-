@@ -1037,26 +1037,70 @@ void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols)
 			// Prints the location of the piece
 			if (tokens[i][j].getStart()) // checks to see if the pawn is at it's starting space
 			{
-				std::cout << "Player" << i + 1 << " | Pawn " << j + 1 << ": START" << std::endl;
-
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": START ";
 				
-			}
-			else if(tokens[i][j].getSafeZone()) // checks to see if the pawn is in it's safe zone.
-			{
-				std::cout << "Player" << i + 1 << " | Pawn " << j + 1 << ": SAFE" << std::endl;
+				switch (i + 1) // checking to see which player this pawn belongs to so that the proper place is printed.
+				{
+				case 1: // Player 1 (Red)
+					std::cout << "(R00)" << std::endl;
+					break;
+				case 2: // Player 2 (Blue)
+					std::cout << "(B00)" << std::endl;
+					break;
+				case 3: // Player 3 (Yellow)
+					std::cout << "(Y00)" << std::endl;
+					break;
+				case 4: // Player 4 (Green)
+					std::cout << "(G00)" << std::endl;
+					break;
+				}
 			}
 			else if (tokens[i][j].getHome()) // checks to see if the pawn is at home.
 			{
-				std::cout << "Player" << i + 1 << " | Pawn " << j + 1 << ": HOME" << std::endl;
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": HOME ";
+				switch (i + 1) // checking to see which player the pawn (token) belongs to.
+				{
+				case 1: // Player 1 (Red)
+					std::cout << "(R06)" << std::endl;
+					break;
+				case 2: // Player 2 (Blue)
+					std::cout << "(B06)" << std::endl;
+					break;
+				case 3: // Player 3 (Yellow)
+					std::cout << "(Y06)" << std::endl;
+					break;
+				case 4: // Player 4 (Green)
+					std::cout << "(G06)" << std::endl;
+					break;
+				}
+			}
+			else if(tokens[i][j].getSafeZone()) // checks to see if the pawn is in it's safe zone.
+			{
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": SAFE ";
+
+				// Safe Spaces are represented as numbers 61 (R01, B01, Y01, or G01) to 65 (R05, B05, Y05, G05)
+				switch (i + 1) // checking to see which player the pawn (token) belongs to.
+				{
+				case 1: // Player 1 (Red)
+					std::cout << "(R0" << tokens[i][j].getLocation() - 60 << ")" << std::endl;
+					break;
+				case 2: // Player 2 (Blue)
+					std::cout << "(B0" << tokens[i][j].getLocation() - 60 << ")" << std::endl;
+					break;
+				case 3: // Player 3 (Yellow)
+					std::cout << "(Y0" << tokens[i][j].getLocation() - 60 << ")" << std::endl;
+					break;
+				case 4: // Player 4 (Green)
+					std::cout << "(G0" << tokens[i][j].getLocation() - 60 << ")" << std::endl;
+					break;
+				}
 			}
 			else // Prints the location of the pawn. if this is gone into, it means the pawn isn't on any special tile (sliders not withstanding)
 			{
 				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << tokens[i][j].getLocation() << std::endl;
 			}
 
-			// (tokens[i][j].getHome()) ? std::cout << "Player" << i + 1 << " | Pawn " << j + 1 << ": HOME" << std::endl : std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << tokens[i][j].getLocation() << std::endl;
 		}
-
 		std::cout << std::endl;
 	}
 

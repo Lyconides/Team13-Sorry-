@@ -112,7 +112,7 @@ std::string game(const short int pTotal) // the game loop.
 
 	short int card(0); // the current card
 	std::string rank(""); // the place each player comes in. When a player wins, their number is added to the 'place' string.
-	
+
 	// Making an object of player pieces
 	TokenClass token = TokenClass(1);
 
@@ -120,17 +120,21 @@ std::string game(const short int pTotal) // the game loop.
 	// test[3] = new int[3];
 
 	// creating a 2D dynamic array to store the player variables
-	TokenClass ** tokens = new TokenClass * [pTotal]; // creating a 1D pointer array of pointers
+	TokenClass ** tokens = new TokenClass *[pTotal]; // creating a 1D pointer array of pointers
 	for (int i = 0; i < pTotal; i++) // filling those secondary points with objects of type TokenClass
-		tokens[i] = new TokenClass [tknAmnt];
+		tokens[i] = new TokenClass[tknAmnt];
 
-	
+
 	for (int i = 0; i < pTotal; i++) // putting a player token into each space. The first row is for P1, the second row is for P2, the third if for P3, and the forth is for Player 4.
 		for (int j = 0; j < tknAmnt; j++)
+		{
 			tokens[i][j] = TokenClass(i + 1); // filling each space with a player number.
+			// tokens[i][j].setSafeZone(true);
+			// tokens[i][j].setLocation(65);
+			// tokens[i][j].setStart(false);
+		}
 	
 	// The layout for the tokens array is as follows: { {1, 1, 1, 1}, {2, 2, 2, 2}, {3, 3, 3, 3}, {4, 4, 4, 4} }
-
 	while (rank.length() < pTotal) // main game loop
 	{
 		// rank = "1243";
@@ -144,14 +148,14 @@ std::string game(const short int pTotal) // the game loop.
 			board::gridPrint();
 			std::cout << std::endl;
 			board::locPrint(tokens, pTotal, tknAmnt); // printing the current locations of each piece.
-			
+			system("pause");
 			// rank = "3421";
 
 			do // card question loop. A '2' allows the player to pull another card, which is what this loop checks.
 			{
 				std::cout << "It is Player " << plyr << "\'s Turn.\n" << std::endl;
 				card = cardGet(); // getting the current player's card
-				(card == 13) ? std::cout << "You got a \'Sorry!\' Card!" << std::endl : std::cout << "You got a \'" << card << "\' card!" << std::endl; // printing out the card the user got
+				(card == 13) ? std::cout << "Player " << plyr << " got a \'Sorry!\' Card!" << std::endl : std::cout << "You got a \'" << card << "\' card!" << std::endl; // printing out the card the user got
 
 				// calling the card function to do the movements.
 
@@ -164,7 +168,7 @@ std::string game(const short int pTotal) // the game loop.
 			} while (card == 2); // accounts for situations when the player pulls another card
 		}
 		
-		system("pause");
+		// system("pause");
 		if (plyr < pTotal) // changing the player number
 		{
 			plyr++;
