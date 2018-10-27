@@ -16,6 +16,10 @@ References: Cplusplus.com - random_shuffle(http://www.cplusplus.com/reference/al
 #include <string>
 #include <iomanip>
 
+// #define NOMINNMAX
+// #include <windows.h> // INCLUSION OF WINDOWS.H CAUSES CRASH (https://en.cppreference.com/w/cpp/types/numeric_limits/max)
+// Create it in the board.h class.
+
 const unsigned short int LEN(45);
 static unsigned short int ary[LEN] = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 7, 7, 7, 7, 8, 8, 8, 8, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13 }; // #13 is te sorry card
 
@@ -121,7 +125,7 @@ std::string game(const short int pTotal) // the game loop.
 		tokens[i] = new TokenClass [tknAmnt];
 
 	
-	for (int i = 0; i < pTotal; i++)
+	for (int i = 0; i < pTotal; i++) // putting a player token into each space. The first row is for P1, the second row is for P2, the third if for P3, and the forth is for Player 4.
 		for (int j = 0; j < tknAmnt; j++)
 			tokens[i][j] = TokenClass(i + 1); // filling each space with a player number.
 	
@@ -136,6 +140,11 @@ std::string game(const short int pTotal) // the game loop.
 		else
 		{
 			board::boardPrint(); // printing the board.
+			std::cout << std::endl;
+			board::gridPrint();
+			std::cout << std::endl;
+			board::locPrint(tokens, pTotal, tknAmnt); // printing the current locations of each piece.
+			
 			// rank = "3421";
 
 			do // card question loop. A '2' allows the player to pull another card, which is what this loop checks.
@@ -164,7 +173,7 @@ std::string game(const short int pTotal) // the game loop.
 		{
 			plyr = 1;
 		}
-		
+		system("CLS"); // clears the screen
 	}
 
 	std::cout << "\nThe game has ended, here are the results!\n" << std::endl;

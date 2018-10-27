@@ -967,3 +967,98 @@ void board::boardPrint() {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 	std::cout << splt << str191 << std::endl << str192 << std::endl << str193 << std::endl;
 }
+
+void board::gridPrint()
+{
+	const int LENR(16), LENC(15);
+
+	// Grid cordinates. The grid is 16 X 15 (16 rows and 15 columns)
+	std::string grid[LENR][LENC] = { {"016", "017", "018", "019", "020", "021", "022", "023", "024", "025", "026", "027", "028", "029", "030"},
+								 {"015", "   ", "R01", "   ", "R00", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "031"},
+								 {"014", "   ", "R02", "   ", "   ", "   ", "   ", "   ", "B06", "B05", "B04", "B03", "B02", "B01", "032"},
+								 {"013", "   ", "R03", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "033"},
+								 {"012", "   ", "R04", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "B00", "034"},
+								 {"011", "   ", "R05", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "035"},
+								 {"010", "   ", "R06", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "036"},
+								 {"009", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "037"},
+								 {"008", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "038"},
+								 {"007", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y06", "   ", "039"},
+								 {"006", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y05", "   ", "040"},
+								 {"005", "G00", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y04", "   ", "041"},
+								 {"004", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y03", "   ", "042"},
+								 {"003", "G01", "G02", "G03", "G04", "G05", "G06", "   ", "   ", "   ", "   ", "   ", "Y02", "   ", "043"},
+								 {"002", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y00", "   ", "Y01", "   ", "044"},
+								 {"001", "058", "057", "056", "055", "054", "053", "052", "051", "050", "049", "048", "047", "046", "045"} };
+
+	// The two types of horizontal divides used when printing the grid.
+	std::string hori("-------------------------------------------------------------");
+	std::string shift("\t\t\t\t\t\t\t\t\t\t      ");
+
+	for (int row = 0; row < LENR; row++)
+	{
+		std::cout << shift;
+		std::cout << hori << std::endl;
+		for (int col = 0; col < LENC; col++)
+		{
+			if (col == 0)
+				std::cout << shift;
+
+			std::cout << "|" << grid[row][col];
+		}
+		std::cout << "|" << std::endl;
+	}
+	std::cout << shift << hori << std::endl;
+}
+
+void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols) // prints the location of each player's pieces.
+{
+	std::cout << std::endl;
+	for (int i = 0; i < rows; i++) // the row is the player number
+	{
+		
+		switch (i + 1) // setting the text colours
+		{
+			case 1: // Player 1 (Red)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x04);
+				break;
+			case 2: // Player 2 (Blue)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x01);
+				break;
+			case 3: // Player 3 (Yellow)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x06);
+				break;
+			case 4: // Player 4 (Green)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x02);
+				break;
+		}
+		// std::cout << i << std::endl;
+		for (int j = 0; j < cols; j++)
+		{
+			// Prints the location of the piece
+			if (tokens[i][j].getStart()) // checks to see if the pawn is at it's starting space
+			{
+				std::cout << "Player" << i + 1 << " | Pawn " << j + 1 << ": START" << std::endl;
+
+				
+			}
+			else if(tokens[i][j].getSafeZone()) // checks to see if the pawn is in it's safe zone.
+			{
+				std::cout << "Player" << i + 1 << " | Pawn " << j + 1 << ": SAFE" << std::endl;
+			}
+			else if (tokens[i][j].getHome()) // checks to see if the pawn is at home.
+			{
+				std::cout << "Player" << i + 1 << " | Pawn " << j + 1 << ": HOME" << std::endl;
+			}
+			else // Prints the location of the pawn. if this is gone into, it means the pawn isn't on any special tile (sliders not withstanding)
+			{
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << tokens[i][j].getLocation() << std::endl;
+			}
+
+			// (tokens[i][j].getHome()) ? std::cout << "Player" << i + 1 << " | Pawn " << j + 1 << ": HOME" << std::endl : std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << tokens[i][j].getLocation() << std::endl;
+		}
+
+		std::cout << std::endl;
+	}
+
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07); // setting the text colour back to white.
+}
