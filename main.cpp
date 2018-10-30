@@ -82,6 +82,8 @@ void rules(int m) // prints the rules for the game.
 			std::cout << "\t-The board will be printed to the screen and the locations of all pawns (tokens) will be shown in a list." << std::endl;
 			std::cout << "\t-The cards will be randomly drawn at the start of each turn, and automatically reshuffled once all 45 cards have been used." << std::endl;
 			std::cout << "\t-Once the card is drawn, the player will select the pawn and available movement options will be displayed." << std::endl;
+			std::cout << "\t-The player's pawns can share the same tile." << std::endl;
+			std::cout << "\t-When a pawn goes down a slide, the pawns in its path are not sent back to their 'START' spaces." << std::endl;
 
 			std::cout << "_____________________________________________________________________________" << std::endl;
 
@@ -92,7 +94,7 @@ void rules(int m) // prints the rules for the game.
 
 }
 
-int cardGet() // cardGet2 optimized
+int cardGet() // returns the card the player has drawn
 {
 	static unsigned short int index;
 
@@ -146,16 +148,14 @@ std::string game(const short int pTotal) // the game loop.
 		}
 		else
 		{
-			board::boardPrint(); // printing the board.
-			std::cout << std::endl;
-			board::gridPrint();
-			std::cout << std::endl;
-			board::locPrint(tokens, pTotal, tknAmnt); // printing the current locations of each piece.
-			// system("pause");
-			// rank = "3421";
-
 			do // card question loop. A '2' allows the player to pull another card, which is what this loop checks.
 			{
+				board::boardPrint(); // printing the board.
+				std::cout << std::endl;
+				board::gridPrint();
+				std::cout << std::endl;
+				board::locPrint(tokens, pTotal, tknAmnt);
+
 				std::cout << "It is Player " << plyr << "\'s Turn.\n" << std::endl;
 				card = cardGet(); // getting the current player's card
 				(card == 13) ? std::cout << "Player " << plyr << " got a \'Sorry!\' Card!" << std::endl : std::cout << "You got a \'" << card << "\' card!" << std::endl; // printing out the card the user got
@@ -185,6 +185,7 @@ std::string game(const short int pTotal) // the game loop.
 		{
 			plyr = 1;
 		}
+
 		system("pause");
 		system("CLS"); // clears the screen
 	}
