@@ -526,25 +526,32 @@ MAINLOOP:
 }
 
 
-bool cardFunc::One(TokenClass & p, BoardSpace & b) {					//Card "One"
-	if (p.getStart() == true)
-	{									//Checks if the pawn the player chose is in start or on the board
-		p.setStart(false);								//If in start, set start check to false,
-		p.setLocation(b.StartSpace);					//move pawn to start space,
-		b.Start -= 1;									//and decrement number of pawns in start
+bool cardFunc::One(TokenClass & p, BoardSpace & b) // '1' card
+{ 
+	
+	if (p.getStart() == true) // Checks if the pawn the player chose is in start or on the board
+	{		
+		// If in start, set start check to false,
+		p.setStart(false);								
+		p.setLocation(b.StartSpace); // move pawn to starting tile
+		b.Start -= 1;// decrement number of pawns in start
 	}
-	else {												//Move Pawn if not in start
-		if ((p.getLocation() + 1) > 65) {					//If pawn has enough movement to move into home,
-			p.setLocation(0);							//moves pawn off board
+	else // Move Pawn if not in start
+	{												
+		if ((p.getLocation() + 1) > 65) // If pawn has enough movement to move into home,
+		{					
+			p.setLocation(0); // moves pawn off board
 			p.setSafeZone(false);
-			p.setHome(true);							//sets pawn in home
+			p.setHome(true); // sets pawn in home
 			b.Home += 1;
 		}
-		else if (p.getLocation() == (b.SafeZoneGate)) {	//Ensures pawn moves into safety zone instead of looping back to starting space
+		else if (p.getLocation() == (b.SafeZoneGate)) // Ensures pawn moves into safety zone instead of looping back to starting space
+		{	
 			p.setLocation(61);
 			p.setSafeZone(true);
 		}
-		else if (p.getLocation() == 60) {					//Fixes movement to loop through all 60 spaces on the board
+		else if (p.getLocation() == 60) // Fixes movement to loop through all 60 spaces on the board
+		{					
 			p.setLocation(1);
 		}
 		else {
@@ -555,15 +562,15 @@ bool cardFunc::One(TokenClass & p, BoardSpace & b) {					//Card "One"
 	return true;
 }
 
-bool cardFunc::Two(TokenClass & p, BoardSpace & b) {
-	if (p.getStart() == true)
+bool cardFunc::Two(TokenClass & p, BoardSpace & b) { // '2' Card
+	if (p.getStart() == true) // moving the pawn '1' space off 'START'
 	{
 		p.setStart(false);
 
 		p.setLocation(b.StartSpace);
 		b.Start -= 1;
 	}
-	else {
+	else { // moving the pawn by '2' spaces
 		if ((p.getLocation() + 2) > 65) {
 			p.setLocation(0);
 			p.setSafeZone(false);
@@ -584,7 +591,7 @@ bool cardFunc::Two(TokenClass & p, BoardSpace & b) {
 	return true;
 }
 
-bool cardFunc::Three(TokenClass & p, BoardSpace & b) { // Card 3
+bool cardFunc::Three(TokenClass & p, BoardSpace & b) { // '3' Card
 	if (p.getStart() == true || p.getHome() == true) // the pawn can't move if it's at 'HOME' or 'START'
 	{
 		return false;
@@ -609,7 +616,7 @@ bool cardFunc::Three(TokenClass & p, BoardSpace & b) { // Card 3
 	return true;
 }
 
-bool cardFunc::Four(TokenClass & p, BoardSpace & b) { //Card "Four"
+bool cardFunc::Four(TokenClass & p, BoardSpace & b) { // '4' Card
 	if (p.getStart() == true || p.getHome() == true) // the pawn can't move if it's at 'HOME' or 'START'
 	{
 		return false;
@@ -629,7 +636,7 @@ bool cardFunc::Four(TokenClass & p, BoardSpace & b) { //Card "Four"
 	return true;
 }
 
-bool cardFunc::Five(TokenClass & p, BoardSpace & b) {
+bool cardFunc::Five(TokenClass & p, BoardSpace & b) { // '5' Card
 	if (p.getStart() == true || p.getHome() == true) // the pawn can't move if it's at 'HOME' or 'START'.
 	{
 		return false;
@@ -659,7 +666,7 @@ bool cardFunc::Five(TokenClass & p, BoardSpace & b) {
 	return true;
 }
 
-bool cardFunc::Seven(TokenClass & p, BoardSpace & b) {
+bool cardFunc::Seven(TokenClass & p, BoardSpace & b) { // '7' card - moving one pawn 7 spaces
 	if (p.getStart() == true || p.getHome() == true) // the pawn can't move if it's at 'HOME' or 'START'.
 	{
 		return false;
@@ -688,7 +695,7 @@ bool cardFunc::Seven(TokenClass & p, BoardSpace & b) {
 	return true;
 }
 
-bool cardFunc::Seven(TokenClass & p1, int m1, TokenClass & p2, int m2, BoardSpace & b) {
+bool cardFunc::Seven(TokenClass & p1, int m1, TokenClass & p2, int m2, BoardSpace & b) { // '7' card - moving one pawn 'x' amount of spaces and another pawn 'y' amount of spaces (totals to 7).
 	if (p1.getStart() == true || p1.getHome() == true || p2.getStart() == true || p2.getHome() == true) // neither pawn can move if at their 'HOME' or 'START' space, which means that a movement is not allowed.
 	{
 		return false;
@@ -742,7 +749,7 @@ bool cardFunc::Seven(TokenClass & p1, int m1, TokenClass & p2, int m2, BoardSpac
 	return true;
 }
 
-bool cardFunc::Eight(TokenClass & p, BoardSpace & b) {
+bool cardFunc::Eight(TokenClass & p, BoardSpace & b) { // '8' card
 	if (p.getStart() == true || p.getHome() == true) // the pawn can't move if it's at 'HOME' or 'START'
 	{
 		return false;
@@ -772,13 +779,13 @@ bool cardFunc::Eight(TokenClass & p, BoardSpace & b) {
 	return true;
 }
 
-bool cardFunc::Ten(TokenClass & p, int m, BoardSpace & b) {
+bool cardFunc::Ten(TokenClass & p, int m, BoardSpace & b) { // '10' card
 	if (p.getStart() == true || p.getHome() == true) // the pawn can't move if it's at 'HOME' or 'START'
 	{
 		return false;
 	}
 
-	if (m == 10) {
+	if (m == 10) { // moving a pawn '10' spaces forward
 		if (((p.getLocation() + 10) > b.SafeZoneGate + 5 && p.getLocation() < b.StartSpace)
 			|| ((p.getLocation() + 10) > 60 && !(p.getSafeZone()) && 10 - (60 - p.getLocation()) > b.SafeZoneGate + 5)
 			|| (p.getLocation() + 10 > 65 && p.getSafeZone())) {
@@ -802,7 +809,7 @@ bool cardFunc::Ten(TokenClass & p, int m, BoardSpace & b) {
 			p.setLocation(p.getLocation() + 10);
 		}
 	}
-	else if (m == -1) {
+	else if (m == -1) { // moving a pawn '1' space backwards
 		if (p.getLocation() == 61) {
 			p.setLocation(b.SafeZoneGate);
 			p.setSafeZone(false);
@@ -817,7 +824,7 @@ bool cardFunc::Ten(TokenClass & p, int m, BoardSpace & b) {
 	return true;
 }
 
-bool cardFunc::Eleven(TokenClass & p, BoardSpace & b) {
+bool cardFunc::Eleven(TokenClass & p, BoardSpace & b) { // '11' card - moving a pawn 11 spaces
 	if (p.getStart() == true || p.getHome() == true) // the pawn can't move if it's at 'HOME' or 'START'
 	{
 		return false;
@@ -849,7 +856,7 @@ bool cardFunc::Eleven(TokenClass & p, BoardSpace & b) {
 	return true;
 }
 
-bool cardFunc::Eleven(TokenClass & p1, TokenClass & p2) {
+bool cardFunc::Eleven(TokenClass & p1, TokenClass & p2) { // '11' card - swapping the positions of two pawns
 	p1.setLocation(p1.getLocation() + p2.getLocation());
 	p2.setLocation(p1.getLocation() - p2.getLocation());
 	p1.setLocation(p1.getLocation() - p2.getLocation());
@@ -857,7 +864,7 @@ bool cardFunc::Eleven(TokenClass & p1, TokenClass & p2) {
 	return true;
 }
 
-bool cardFunc::Twelve(TokenClass & p, BoardSpace & b) {
+bool cardFunc::Twelve(TokenClass & p, BoardSpace & b) { // 12 card - moving a pawn 12 spaces
 	if (p.getStart() == true || p.getHome() == true) // the pawn can't move if it's at 'HOME' or 'START'
 	{
 		return false;
@@ -888,7 +895,7 @@ bool cardFunc::Twelve(TokenClass & p, BoardSpace & b) {
 	return true;
 }
 
-bool cardFunc::Sorry(TokenClass & p1, TokenClass & p2, BoardSpace & b1, BoardSpace & b2) {
+bool cardFunc::Sorry(TokenClass & p1, TokenClass & p2, BoardSpace & b1, BoardSpace & b2) { // Sorry! card - taking an opponent's pawn's place, and sending that pawn back to 'START'
 	if (p1.getStart() && !(p2.getSafeZone()) && !(p2.getHome()) && !(p2.getStart())) {
 		p1.setLocation(p2.getLocation());
 		p1.setStart(false);
