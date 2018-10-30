@@ -55,7 +55,7 @@ void cardFunc::cardDesc(const unsigned int card) // prints the description of th
 void cardFunc::cardGot(TokenClass** & tokens, const int tRows, const int tColumns, BoardSpace* & bps, const int bpsLen, int plyr, int card) //determines what function to call based on what card it recieves
 {
 	std::string input = ""; // user input
-	unsigned short int pawn(1); // the number of the pawn the player is using.
+	unsigned short int pawn(0); // the number of the pawn the player is using.
 	unsigned short int pawn2(1); // the second pawn the player is changing with their turn (see card 7 and 11)
 	unsigned short int share(0); // the amount of spaces the player is sharing with another pawn (card 7 exclusive)
 	unsigned short int opnt(0); // saves the opponent the current player selects (if applicable)
@@ -85,7 +85,6 @@ MAINLOOP:
 	while (move == false) // the main loop for getting user input.
 	{
 		std::cout << "Enter the number of the pawn you would wish to use: ";
-		// std::getline(std::cin, input);
 
 		if (!(std::cin >> pawn)) // checks to see if a number was given
 		{
@@ -95,7 +94,6 @@ MAINLOOP:
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			continue; // sends back to the start of the loop
 		}
-		// system("pause");
 		if (pawn > 0 && pawn <= 4) // the pawn numbers should only be from 1 - 4, which is what this if statement checks.
 		{
 			if (tokens[plyr - 1][pawn - 1].getHome() == true) // if the pawn is at 'HOME', it cannot be moved.
@@ -132,7 +130,7 @@ MAINLOOP:
 
 						if (input == "1" || input == "yes" || input == "YES" || input == "y" || input == "Y" || input == "Yes") // the value of '7' will be shared.
 						{
-							std::cout << "\nOkay. What pawn would you like to choose?";
+							std::cout << "\nOkay. What pawn would you like to choose?" << std::endl;
 							std::cout << "Pawn: ";
 							getline(std::cin, input);
 
@@ -181,11 +179,6 @@ MAINLOOP:
 								}
 
 							}
-							else if (input == "-1")
-							{
-								std::cout << "\nOkay. I'll will ask you to select a new pawn." << std::endl;
-								goto MAINLOOP;
-							}
 							else // if the input is not valid.
 							{
 								std::cout << "\nI can't tell what you're trying to do. Can you try again?" << std::endl;
@@ -195,6 +188,11 @@ MAINLOOP:
 						else if (input == "0" || input == "no" || input == "NO" || input == "n" || input == "N" || input == "No") // the value of '7' will not be shared.
 						{
 							move = Seven(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
+						}
+						else if (input == "-1")
+						{
+							std::cout << "\nOkay. I'll will ask you to select a new pawn." << std::endl;
+							goto MAINLOOP;
 						}
 						else
 						{
@@ -322,7 +320,6 @@ MAINLOOP:
 					break;
 
 				case 13: // the 'Sorry!' case
-					// move = Sorry(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
 					move = true;
 					for (int i = 0; i < tColumns; i++) // checks to see if the player has any pawns in start to move.
 					{
@@ -360,11 +357,18 @@ MAINLOOP:
 						{
 							do // has the player select which pawn they want to change places with.
 							{
-								std::cout << "\nWhich of your pawns would you want to take from 'START?' Type in its number." << std::endl;
-								std::cout << "Your Pawn:" << std::endl;
-								getline(std::cin, input);
+								if (pawn == 0) // if a pawn has not been selected, the program asks for one.
+								{
+									std::cout << "\nWhich of your pawns would you want to take from 'START?' Type in its number." << std::endl;
+									std::cout << "Your Pawn:";
+									getline(std::cin, input);
+								}
+								else // if the user has already chosen a pawn, then they aren't asked for it again.
+								{
+									input = std::to_string(pawn);
+								}
 
-								if (input == "1" || input == "2" || input == "3" || input == "4")
+								if (input == "1" || input == "2" || input == "3" || input == "4") // valid number
 								{
 									pawn = std::stoi(input); // getting the input as an integer.
 									if (tokens[plyr - 1][pawn - 1].getStart() == true) // if the pawn is at its start space, then it is usuable.
@@ -425,9 +429,10 @@ MAINLOOP:
 											continue;
 										}
 									}
-									else
+									else // invalid number
 									{
 										std::cout << "\nThat pawn cannot be used. Try again." << std::endl;
+										pawn = 0;
 										input = "";
 										continue;
 									}

@@ -124,23 +124,16 @@ std::string game(const short int pTotal) // the game loop.
 		tokens[i] = new TokenClass[tknAmnt]; // filling those indexes with a dynamic array of type TokenClass so that it can be a 2D array of pawns.
 		pLocs[i] = BoardSpace(i + 1); // Giving every player an index in boardSpace
 	}
-		
-
 
 	for (int i = 0; i < pTotal; i++) // putting a player token into each space. The first row is for P1, the second row is for P2, the third if for P3, and the forth is for Player 4.
 		for (int j = 0; j < tknAmnt; j++)
 		{
 			tokens[i][j] = TokenClass(i + 1); // filling each space with a player number.
-			// tokens[i][j].setSafeZone(true);
-			// tokens[i][j].setLocation(65);
-			// tokens[i][j].setStart(false);
-			// tokens[i][j].setLocation(58);
 		}
 	
 	// The layout for the tokens array is as follows: { {1, 1, 1, 1}, {2, 2, 2, 2}, {3, 3, 3, 3}, {4, 4, 4, 4} }
 	while (rank.length() < pTotal) // main game loop
 	{
-		// rank = "1243";
 		if (rank.find(std::to_string(plyr)) != std::string::npos) { // if the player's number is found in the rank variable, it means all of their pawns are at "HOME"
 			std::cout << "\nPlayer " << plyr << "\'s pieces are all in the \'HOME\' zone.\n" << std::endl;
 		}
@@ -159,9 +152,7 @@ std::string game(const short int pTotal) // the game loop.
 				(card == 13) ? std::cout << "Player " << plyr << " got a \'Sorry!\' Card!" << std::endl : std::cout << "You got a \'" << card << "\' card!" << std::endl; // printing out the card the user got
 				
 				move.cardDesc(card); // prints the description of the card
-
-				// calling the card function to do the movements.
-				move.cardGot(tokens, pTotal, tknAmnt, pLocs, pTotal, plyr, card);
+				move.cardGot(tokens, pTotal, tknAmnt, pLocs, pTotal, plyr, card); // calling the card function to do the movements.
 
 				// checking to see if that move got all of the player's pawns in the home zone.
 				if (tokens[plyr - 1][0].getHome() == true && tokens[plyr - 1][1].getHome() == true && tokens[plyr - 1][2].getHome() == true && tokens[plyr - 1][3].getHome() == true)
@@ -209,7 +200,7 @@ int main()
 	do // Printing the rules of Sorry!
 	{
 		// Asking the user if they want the rules of the board game and/or the rules of the text-game printed.
-		std::cout << "Instructions: Do you the know the rules of Sorry!? Do you know the rules of the program? Enter the number that you correspond with. " << std::endl;
+		std::cout << "Instructions: Do you know the rules of Sorry!? Do you know the rules of the program? Enter the number that you correspond with. " << std::endl;
 		std::cout << "(1) I know how both work." << std::endl;
 		std::cout << "(2) I know how the board game Sorry! works, but not how this program works." << std::endl;
 		std::cout << "(3) I know how the program works, but not how Sorry! works." << std::endl;

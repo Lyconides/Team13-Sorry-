@@ -40,7 +40,7 @@ BoardSpace::BoardSpace(int player) {
 
 			break;
 		case 3: // Player 3 (Yellow)
-			StartSpace = 48;
+			StartSpace = 50;
 			SafeZoneGate = StartSpace - 2;
 
 			// Can't use slides 47 or 55
