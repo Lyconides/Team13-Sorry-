@@ -1,5 +1,5 @@
 /*
-Names: Angus Wai (100719558), Jason Lee (100698121), Jiminy Cao (100701335), Roderick “R.J.” Montague (100701758), Ulric Miller (100693403)
+Names and Student Numbers: Angus Wai (100719558), Jason Lee (100698121), Jiminy Cao (100701335), Roderick “R.J.” Montague (100701758), Ulric Miller (100693403)
 Date: 10/30/2018
 References: Cplusplus.com - random_shuffle(http://www.cplusplus.com/reference/algorithm/random_shuffle/), Stackoverflow.com - "Is it possible to random shuffle an array of int elements" (https://stackoverflow.com/questions/14720134/is-it-possible-to-random-shuffle-an-array-of-int-elements)
 		> Cplusplus.com - toupper(http://www.cplusplus.com/reference/cctype/toupper/), TutorialsPoint.com - Dynamic Memory (https://www.tutorialspoint.com/cplusplus/cpp_dynamic_memory.htm), GeeksforGeeks.org - Classes and Objects (https://www.geeksforgeeks.org/c-classes-and-objects/)
@@ -162,9 +162,6 @@ std::string game(const short int pTotal) // the game loop.
 
 			} while (card == 2); // accounts for situations when the player pulls another card
 		}
-		// std::cout << "test" << std::endl;
-		// std::cout << std::endl;
-		// system("pause");
 
 		if (plyr < pTotal) // changing the player number
 		{
