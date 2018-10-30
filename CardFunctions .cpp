@@ -61,7 +61,7 @@ void cardFunc::cardGot(TokenClass** & tokens, const int tRows, const int tColumn
 	unsigned short int opnt(0); // saves the opponent the current player selects (used for card 11).
 	
 	bool move = true; // checks to see if the pawn was actually moved. If it's false, then the pawn couldn't be moved, and what the user chose is invalid.
-	int slide(-1); // saves the location of the player if they are on a usable slide.
+	int slide(-1); // saves the location of the player if they are on a usable slide. It also saves how far they've slid.
 
 	// Since a '1' or a '2' are needed to move a pawn off of 'START', this checks to see if the player can actually move anywhere.
 	for (int i = 0; i < tColumns; i++)
@@ -474,6 +474,7 @@ MAINLOOP:
 		case 47:
 			std::cout << "\nYou landed on a slider! Your pawn got moved over '3' spaces forward!\n" << std::endl;
 			tokens[plyr - 1][pawn - 1].setLocation(tokens[plyr - 1][pawn - 1].getLocation() + 3);
+			slide = 3;
 			break;
 
 		// Sliders 25, 40, 55, and 10 move the player 4 spaces forward.
@@ -483,8 +484,22 @@ MAINLOOP:
 		case 55:
 			std::cout << "\nYou landed on a slider! Your pawn got moved '4' spaces!\n" << std::endl;
 			tokens[plyr - 1][pawn - 1].setLocation(tokens[plyr - 1][pawn - 1].getLocation() + 4);
+			slide = 4;
 			break;
 	
+	}
+
+	// Checks to see if the player encountered any pawns in their path when sliding. If so, those pawns are send back to their starting space, regardless of who they belong to.
+	for (int i = 0; i < tRows; i++)
+	{
+		for (int j = 0; j < tColumns && j != pawn - 1; j++) // if a pawn was in the path, it's sent back to 'START'.
+		{
+			if (tokens[i][j].getLocation() >= tokens[plyr - 1][pawn - 1].getLocation() - slide && tokens[i][j].getLocation() <= tokens[plyr - 1][pawn - 1].getLocation()) // if the discovered is within the range of spaces moved by the player's pawn
+			{
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << " has been knocked back to it's starting space!" << std::endl;
+				tokens[i][j].reset(); // resets the token to bring it back to it's starting space.
+			}
+		}
 	}
 
 	// Checking to see if the location of the player's pawn is the same as that of an enemy pawn. If so, the enemy pawn is sent back to start.

@@ -28,6 +28,8 @@ public:
 	void setLocation(int space);
 	void setPlayer(int p);
 
+	void reset(); // resets the token back to it's starting values.
+
 private:
 
 };

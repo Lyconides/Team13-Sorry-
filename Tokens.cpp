@@ -54,3 +54,12 @@ void TokenClass::setLocation(int space) {
 void TokenClass::setPlayer(int p) {
 	Player = p;
 }
+
+// Resetting the token back to its default values
+void TokenClass::reset()
+{
+	setStart(true);
+	setSafeZone(false);
+	setHome(false);
+	setLocation(0);
+}
