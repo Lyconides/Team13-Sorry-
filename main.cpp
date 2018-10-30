@@ -1,8 +1,8 @@
 /*
 Names: Angus Wai (100719558), Jason Lee (100698121), Jiminy Cao (100701335), Roderick “R.J.” Montague (100701758), Ulric Miller (100693403)
-Date: 10/25/2018
+Date: 10/30/2018
 References: Cplusplus.com - random_shuffle(http://www.cplusplus.com/reference/algorithm/random_shuffle/), Stackoverflow.com - "Is it possible to random shuffle an array of int elements" (https://stackoverflow.com/questions/14720134/is-it-possible-to-random-shuffle-an-array-of-int-elements)
-		> Cplusplus.com - toupper(http://www.cplusplus.com/reference/cctype/toupper/), TutorialsPoint.com - Dynamic Memory (https://www.tutorialspoint.com/cplusplus/cpp_dynamic_memory.htm)
+		> Cplusplus.com - toupper(http://www.cplusplus.com/reference/cctype/toupper/), TutorialsPoint.com - Dynamic Memory (https://www.tutorialspoint.com/cplusplus/cpp_dynamic_memory.htm), GeeksforGeeks.org - Classes and Objects (https://www.geeksforgeeks.org/c-classes-and-objects/)
 
 */
 
@@ -18,13 +18,11 @@ References: Cplusplus.com - random_shuffle(http://www.cplusplus.com/reference/al
 #include <string>
 #include <iomanip>
 
-// #define NOMINNMAX
-// #include <windows.h> // INCLUSION OF WINDOWS.H CAUSES CRASH (https://en.cppreference.com/w/cpp/types/numeric_limits/max)
-// Create it in the board.h class.
+// The array that stores the order the cards will be drawn in; there are 5 '1' cards, and '4' of every other card type. When all cards are used, the array is reshuffeled. Card '13' represents the 'Sorry!' card.
+const unsigned short int LEN(45); // length of ary (there are 45 cards total)
+static unsigned short int ary[LEN] = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 7, 7, 7, 7, 8, 8, 8, 8, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13 };
 
-const unsigned short int LEN(45);
-static unsigned short int ary[LEN] = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 7, 7, 7, 7, 8, 8, 8, 8, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13 }; // #13 is te sorry card
-
+// Function prototypes
 int cardGet();
 void rules(int);
 std::string game(const short int);
@@ -33,7 +31,7 @@ void rules(int m) // prints the rules for the game.
 {
 	switch (m)
 	{
-		case 1:
+		case 1: // prints the rules of the Sorry! board game
 			std::cout << "\nRULES OF THE BOARDGAME SORRY!\n*************************************" << std::endl;
 			std::cout << "Here is a general explanation of how the boardgame \'Sorry!\' works." << std::endl;
 
@@ -73,7 +71,8 @@ void rules(int m) // prints the rules for the game.
 
 			std::cout << "_____________________________________________________________________________" << std::endl;
 			break;
-		case 2:
+
+		case 2: // prints the rules of our text-based version of Sorry!
 			std::cout << "\nMECHANICS OF THE PROGRAM\n*************************************\n" << std::endl;
 			std::cout << "Here are the list of significant differences from the board game \'Sorry!\', and our text-based version." << std::endl;
 
@@ -87,25 +86,25 @@ void rules(int m) // prints the rules for the game.
 			std::cout << "_____________________________________________________________________________" << std::endl;
 
 			break;
+
 		default:
 			return;
 	}
 
 }
 
-int cardGet() // returns the card the player has drawn
+int cardGet() // returns the card the player has drawn.
 {
-	static unsigned short int index;
+	static unsigned short int index; // saves the number of cards drawn, and is used to provide the next card. It's static so that the value is saved even when the program is not using this function.
 
-	if (index == 0 ^ index >= 45) // shuffles the array only at the start, or once all values have been used
+	if (index == 0 ^ index >= 45) // shuffles the array only at the start, or once all cards have been used.
 	{
-		std::random_shuffle(std::begin(::ary), std::end(::ary)); // shuffles array from beginning to end.
+		std::random_shuffle(std::begin(::ary), std::end(::ary)); // shuffles array's values+ from beginning to end.
 		index = 0;
 	}
 
-	index++;
-
-	return ::ary[index - 1]; // index is added to before being sent back, so index - 1 is used for what needs to be returned.
+	index++; // adding to the number of cards drawn.
+	return ::ary[index - 1]; // the index is increased by 1 before it's used to get the next card, so index - 1 is used for what needs to be returned.
 }
 
 std::string game(const short int pTotal) // the game loop.
@@ -197,18 +196,19 @@ int main()
 {
 	std::string input; // user input
 	unsigned short int pTotal(0); // the total number of players
-	std::string rank; // the place each person comes in.
+	std::string rank; // saves the order the player's finished in
 
-	srand(time(0)); // seeding the randomizer.
-
+	srand(time(0)); // seeding the randomizer to make it actually random.
+	
+	// Introduction
 	std::cout << "Game Development Workshop - Project 2 - Sorry!\n--------------------------------------------------------------" << std::endl;
-	std::cout << "Developers (Team 13):\n*********************" << std::endl;
-	std::cout << "Angus Wai\nJason Lee\nJiminy Cao\nRoderick \"R.J.\" Montague\nUlric Miller" << std::endl;
+	std::cout << "Developer(s): (Team 13)" << std::endl;
 	std::cout << "--------------------------------------------------------------\n" << std::endl;
 
 	std::cout << "Welcome to Team 13's recreation of the board game \'Sorry!\'." << std::endl;
 	do // Printing the rules of Sorry!
 	{
+		// Asking the user if they want the rules of the board game and/or the rules of the text-game printed.
 		std::cout << "Instructions: Do you the know the rules of Sorry!? Do you know the rules of the program? Enter the number that you correspond with. " << std::endl;
 		std::cout << "(1) I know how both work." << std::endl;
 		std::cout << "(2) I know how the board game Sorry! works, but not how this program works." << std::endl;
@@ -217,27 +217,27 @@ int main()
 		std::cout << "\nInput: ";
 		getline(std::cin, input);
 
-		if (input == "1")
+		if (input == "1") // no rules are printed
 		{
 			std::cout << "Alright. then we can get right into this." << std::endl;
 		}
-		else if (input == "2")
+		else if (input == "2") // the rules of the program are printed
 		{
 			std::cout << "Printing how the program works." << std::endl;
 			rules(2);
 		}
-		else if (input == "3")
+		else if (input == "3") // the ruels of the board game Sorry! are printed
 		{	
 			std::cout << "Printing how the Sorry! works." << std::endl;
 			rules(1);
 		}
-		else if (input == "4")
+		else if (input == "4") // the rules of teh board game and the text-based version of it are printed
 		{
 			std::cout << "Printing the rules of Sorry!, and the rules of the program." << std::endl;
 			rules(1);
 			rules(2);
 		}
-		else
+		else // invalid input; the program asks the user again
 		{
 			std::cout << "I don't know what you're trying to say. Ask again.\n" << std::endl;
 			input = "";
@@ -247,11 +247,12 @@ int main()
 
 	std::cout << std::endl;
 
-	do // Setting the player number
+	do // Getting how many players are in this round (1 - 4).
 	{
 		std::cout << "Now that we have gotten the rules out of the way, I must ask you, how many people are playing? This game supports 2-4 players, so enter the amount of people playing:" << std::endl;
 		std::cout << "Players: ";
 
+		// Checks to see if the input was a valid number.
 		if (!(std::cin >> pTotal)) // checks to see if a valid character was given
 		{
 			std::cout << "\nInvalid. Go Again.\n" << std::endl;
@@ -259,7 +260,6 @@ int main()
 			// Removing the rest of the invalid input.
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
 			pTotal = 0;
 			continue;
 		}
@@ -270,15 +270,13 @@ int main()
 			continue;
 		}
 
-	} while (pTotal == 0);
+	} while (pTotal == 0); // loops until a valid number is given
 
 	std::cout << "\nPlayers Set! Starting Game..." << std::endl;
-
-	do
+	do // loop for doing multiple matches of the game,
 	{
-		rank = game(pTotal); // game Loop
-		// rank = "4213";
-		
+		rank = game(pTotal); // Game Loop
+
 		std::cout << "\nEnding Standings\n---------------" << std::endl; // printing the ending standings
 		for (int i = 0; i < rank.length(); i++)
 		{
@@ -294,19 +292,19 @@ int main()
 
 			if (input == "1" || input == "y" || input == "Y" || input == "yes" || input == "YES" || input == "Yes") // they want to play again
 			{
-				std::cout << "Very well. The game will now end." << std::endl;
+				std::cout << "A new game will be started." << std::endl;
 				input = "";
 			}
-			else if (input == "0" || input == "n" || input == "N" || input == "no" || input == "NO" || input == "No") // the person doesn't want to play again
+			else if (input == "0" || input == "n" || input == "N" || input == "no" || input == "NO" || input == "No") // they don't want to play again
 			{
 				std::cout << "Very well. The game will now end." << std::endl;
 			}
 			else // unusable input
 			{
 				std::cout << "Invalid Input. You all will be prompted again for a decision." << std::endl;
-				input = "Inquisition";
+				input = "The Spanish Inquisition";
 			}
-		} while (input == "Inquisition");
+		} while (input == "The Spanish Inquisition"); // there's no reason why this is the Spanish Inquisition, but there's also no reason why it can't be the Spnaish Inqusition.
 		
 	} while (input == "");
 	

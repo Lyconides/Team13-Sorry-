@@ -1,3 +1,4 @@
+// Saves the tile in front of 'START' and the in front of the player's safety spaces. Also saves what sliders the pawn is allowed to use.
 #include "BoardSpaces.h"
 
 BoardSpace::BoardSpace(int player) {
@@ -5,7 +6,7 @@ BoardSpace::BoardSpace(int player) {
 	// It also saves the location of the space right outside of their first 'SAEFTY' tile.
 	// And saves what sliders the player is allowed to use.
 
-	// The player cannot use the slider of their colour.
+	// The player cannot use the slider of their colour, so the locations of the unusable slides are not saved as available options. The starting location of each slide and what colour it's for is listed below.
 	// Red: 17, 25
 	// Blue: 32, 40
 	// Yellow: 47, 55
@@ -16,6 +17,7 @@ BoardSpace::BoardSpace(int player) {
 			StartSpace = 20;
 			SafeZoneGate = StartSpace - 2;
 
+			// Can't use slides 17 or 25
 			slides[0] = 32;
 			slides[1] = 40;
 			slides[2] = 47;
@@ -28,6 +30,7 @@ BoardSpace::BoardSpace(int player) {
 			StartSpace = 35;
 			SafeZoneGate = StartSpace - 2;
 
+			// Can't use slides 32 or 40
 			slides[0] = 17;
 			slides[1] = 25;
 			slides[2] = 47;
@@ -40,6 +43,7 @@ BoardSpace::BoardSpace(int player) {
 			StartSpace = 48;
 			SafeZoneGate = StartSpace - 2;
 
+			// Can't use slides 47 or 55
 			slides[0] = 17;
 			slides[1] = 25;
 			slides[2] = 32;
@@ -52,6 +56,7 @@ BoardSpace::BoardSpace(int player) {
 			StartSpace = 5;
 			SafeZoneGate = StartSpace - 2;
 
+			// Can't use slides 2 or 10
 			slides[0] = 17;
 			slides[1] = 25;
 			slides[2] = 32;
@@ -63,9 +68,9 @@ BoardSpace::BoardSpace(int player) {
 	}
 }
 
-int BoardSpace::onSlide(int loc) // checks to see if the player's pawn is on a slider
+int BoardSpace::onSlide(int loc) // checks to see if the player's pawn is on a slider by getting their current location. If the player is not on any of the slides, a -1 is returned.
 {
-	for (int i = 0; i < sizeof(slides) / sizeof(int); i++)
+	for (int i = 0; i < sizeof(slides) / sizeof(int); i++) // goes through each slides index to see if the player's pawn has the same location as any of them.
 	{
 		if (loc == slides[i])
 		{

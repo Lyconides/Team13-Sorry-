@@ -10,7 +10,7 @@ cardFunc::cardFunc() // constructor
 
 void cardFunc::cardDesc(const unsigned int card) // prints the description of the card based on the number provided.
 {
-	switch (card) // prints the description of the provided number.
+	switch (card) // prints the description of the provided card. Card '13' is the 'Sorry!' card.
 	{
 		case 1:
 			std::cout << "1: move 1 space, or move 1 space off of the \"START\" tile" << std::endl;
@@ -36,7 +36,7 @@ void cardFunc::cardDesc(const unsigned int card) // prints the description of th
 		case 10:
 			std::cout << "10: move 10 spaces forward, or move on space back. If no pawns can be moved 10 spaces forward, you must move a pawn 1 space back." << std::endl;
 			break;
-		case 11: // two functions
+		case 11:
 			std::cout << "11: move 11 spaces forward, or swap places with an opponent's pawn. You cannot switch a pawn that is in its designated \"START\", \"SAFETY\", or \"HOME\" zone." << std::endl;
 			break;
 		case 12:
@@ -55,25 +55,27 @@ void cardFunc::cardDesc(const unsigned int card) // prints the description of th
 void cardFunc::cardGot(TokenClass** & tokens, const int tRows, const int tColumns, BoardSpace* & bps, const int bpsLen, int plyr, int card) //determines what function to call based on what card it recieves
 {
 	std::string input = ""; // user input
-	unsigned short int pawn(1); // the number of the pawn the player is using
-	unsigned short int pawn2(1); // the second pawn the player will use in the same turn (card 7 exclusive)
-	unsigned short int share(0); // the amount of spaces the player wants the pawn they're sharing with to move (card 7 exclusive)
-	unsigned short int opnt(0); // saves the opponent the current player selects (used for card 11).
+	unsigned short int pawn(1); // the number of the pawn the player is using.
+	unsigned short int pawn2(1); // the second pawn the player is changing with their turn (see card 7 and 11)
+	unsigned short int share(0); // the amount of spaces the player is sharing with another pawn (card 7 exclusive)
+	unsigned short int opnt(0); // saves the opponent the current player selects (if applicable)
 	
-	bool move = true; // checks to see if the pawn was actually moved. If it's false, then the pawn couldn't be moved, and what the user chose is invalid.
-	int slide(-1); // saves the location of the player if they are on a usable slide. It also saves how far they've slid.
+	bool move = true; // checks to see if the turn was successful. If it's false, then something went wrong and the player must be prommpted again for a movement choice.
+	int slide(-1); // saves the location of the slide the player is on if it is usuable. It then saves how many spaces the player slid.
 
 	// Since a '1' or a '2' are needed to move a pawn off of 'START', this checks to see if the player can actually move anywhere.
-	for (int i = 0; i < tColumns; i++)
+	// The Sorry! card can also be used to take the pawn off of 'START', but there is an additional check that must be done for it later to see if it's usable.
+	for (int i = 0; i < tColumns; i++) // checks to see if the player can move
 	{
-		if ((tokens[plyr - 1][i].getStart() == true && (card <= 2 || card == 13)) || (tokens[plyr - 1][i].getStart() == false && tokens[plyr - 1][i].getHome() == false)) // if the pawn is at 'START', the player can only move with a 1 of 2 card.
+		// if the player has no pawn outside of 'HOME', then there are definitely no moves possible.
+		if ((tokens[plyr - 1][i].getStart() == true && (card <= 2 || card == 13)) || (tokens[plyr - 1][i].getStart() == false && tokens[plyr - 1][i].getHome() == false))
 		{
 			move = false;
 			break;
 		}
 	}
 
-	if (move == true) // if no moves can be made, then nothing happens and a message is printed.
+	if (move == true) // if no moves can be made, then nothing happens and a message is printed to tell the player they can't do anything.
 	{
 		std::cout << "No moves are available." << std::endl;
 		return;
@@ -463,58 +465,59 @@ MAINLOOP:
 		
 	}
 
-	slide = bps->onSlide(tokens[plyr - 1][pawn - 1].getLocation()); // gets whether the player is on a usuable slide or not. If not, a -1 is reutrned.
+	slide = bps->onSlide(tokens[plyr - 1][pawn - 1].getLocation()); // gets whether the player is on a usuable slide or not. If they're not on a usable slide, a -1 is reutrned.
 
-	switch (slide)
+	switch (slide) // checking for sliders
 	{
-		// Slides 2, 17, 32, 47, and move the player 3 spaces forward.
+		// Slides 2, 17, 32, and 47 move the player 3 spaces forward.
 		case 2:
 		case 17:
 		case 32:
 		case 47:
 			std::cout << "\nYou landed on a slider! Your pawn got moved over '3' spaces forward!\n" << std::endl;
-			tokens[plyr - 1][pawn - 1].setLocation(tokens[plyr - 1][pawn - 1].getLocation() + 3);
-			slide = 3;
+			tokens[plyr - 1][pawn - 1].setLocation(tokens[plyr - 1][pawn - 1].getLocation() + 3); // moving the pawn
+			slide = 3; // saving how many spaces they moved.
 			break;
 
-		// Sliders 25, 40, 55, and 10 move the player 4 spaces forward.
+		// Sliders 10, 25, 40, and 55 move the player 4 spaces forward.
 		case 10:
 		case 25:
 		case 40:
 		case 55:
 			std::cout << "\nYou landed on a slider! Your pawn got moved '4' spaces!\n" << std::endl;
-			tokens[plyr - 1][pawn - 1].setLocation(tokens[plyr - 1][pawn - 1].getLocation() + 4);
-			slide = 4;
+			tokens[plyr - 1][pawn - 1].setLocation(tokens[plyr - 1][pawn - 1].getLocation() + 4); // moving the pawn
+			slide = 4; // saving how many spaces they moved.
 			break;
 	
 	}
 
-	// Checks to see if the player encountered any pawns in their path when sliding. If so, those pawns are send back to their starting space, regardless of who they belong to.
+	// Checks to see if the player encountered any pawns in their path when sliding. If so, those pawns are sent back to their starting space, regardless of whom they belong to.
 	for (int i = 0; i < tRows; i++)
 	{
-		for (int j = 0; j < tColumns && j != pawn - 1; j++) // if a pawn was in the path, it's sent back to 'START'.
+		for (int j = 0; j < tColumns && j != pawn - 1; j++) // if a pawn was in the path, it's sent back to its 'START' space. The pawn that actually did the move is ignored.
 		{
-			if (tokens[i][j].getLocation() >= tokens[plyr - 1][pawn - 1].getLocation() - slide && tokens[i][j].getLocation() <= tokens[plyr - 1][pawn - 1].getLocation()) // if the discovered is within the range of spaces moved by the player's pawn
+			if (tokens[i][j].getLocation() >= tokens[plyr - 1][pawn - 1].getLocation() - slide && tokens[i][j].getLocation() <= tokens[plyr - 1][pawn - 1].getLocation()) // if the discovered pawn is within the range of spaces moved by the player's pawn, it gets sent back to 'START'.
 			{
-				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << " has been knocked back to it's starting space!" << std::endl;
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << " has been knocked back to its starting space!" << std::endl;
 				tokens[i][j].reset(); // resets the token to bring it back to it's starting space.
 			}
 		}
 	}
 
 	// Checking to see if the location of the player's pawn is the same as that of an enemy pawn. If so, the enemy pawn is sent back to start.
-	for (int i = 0; i < tRows; i++)
+	for (int i = 0; i < tRows; i++) // rows of players
 	{
-		for (int j = 0; j < tColumns && i != plyr - 1; j++)
+		for (int j = 0; j < tColumns && i != plyr - 1; j++)  // columns of pieces
 		{
-			if (tokens[plyr - 1][pawn - 1].getLocation() == tokens[i][j].getLocation()) // if the locations are equal, the opponent's token is sent back to start.
+			if (tokens[plyr - 1][pawn - 1].getLocation() == tokens[i][j].getLocation() && plyr - 1 != i) // if the locations are equal, and the pawns don't belong to the same player, the opponent's token is sent back to start.
 			{
+				// The pawn can't be bumped if it's at 'START', 'HOME' or on one of its safety tiles
 				if (tokens[i][j].getStart() == false && tokens[i][j].getSafeZone() == false && tokens[i][j].getHome() == false) // Internally, 'Start' and 'Home' are considered zero, so to avoid a false positive these special tiles need to be checked.
 				{
 					std::cout << "Player " << plyr << "'s number " << pawn << " pawn landed on the same space as Player " << i + 1 << "'s number " << j + 1 << " pawn!" << std::endl;
 					std::cout << "Player " << i + 1 << "'s pawn has been sent back to it's 'START' space!" << std::endl;
 
-					tokens[i][j].setLocation(bps[i].StartSpace); // setting the opponent's token to their start space.
+					tokens[i][j].reset(); // sending the opponent's token back to it's start space.
 				}
 			}
 		}

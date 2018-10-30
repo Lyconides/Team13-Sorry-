@@ -1,13 +1,13 @@
-#pragma once
 // The header for the card functions
+#pragma once
 #include "Tokens.h"
 #include "BoardSpaces.h"
 
-class cardFunc
+class cardFunc // class
 {
 public:
 	cardFunc(); // constructor
-	void cardDesc(const unsigned int); // returns the description for the card gotten.
+	void cardDesc(const unsigned int); // prints the description for the card gotten.
 	void cardGot(TokenClass** &, const int, const int, BoardSpace* &, const int, int, int); // gets what card the user has, and uses the appropriate function.
 
 private:
@@ -21,12 +21,12 @@ private:
 
 	bool Five(TokenClass & p, BoardSpace & b); // the '5' card
 	bool Seven(TokenClass & p, BoardSpace & b); // the '7' card - used when only one pawn is being moved
-	bool Seven(TokenClass & p1, int m1, TokenClass & p2, int m2, BoardSpace & b); // the '7' card - used when the movements are being split across two pawns.
+	bool Seven(TokenClass & p1, int m1, TokenClass & p2, int m2, BoardSpace & b); // the '7' card - used when the 7 spaces are being split across two pawns.
 	bool Eight(TokenClass & p, BoardSpace & b); // the '8' card
 
 	bool Ten(TokenClass & p, int m, BoardSpace & b); // the '10' card
-	bool Eleven(TokenClass & p, BoardSpace & b); // the '11' card for standard movement
-	bool Eleven(TokenClass & p1, TokenClass & p2); // the '11' card; used when the location of two pawns are being swapped
+	bool Eleven(TokenClass & p, BoardSpace & b); // the '11' card for standard movement (i.e. moving a pawn 11 spaces)
+	bool Eleven(TokenClass & p1, TokenClass & p2); // the '11' card for switching the locations of two pawns
 	bool Twelve(TokenClass & p, BoardSpace & b); // the '12' card
 
 	bool Sorry(TokenClass & p1, TokenClass & p2, BoardSpace & b1, BoardSpace & b2); // the Sorry! card

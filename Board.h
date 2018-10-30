@@ -1,5 +1,5 @@
-#pragma once
 // Header for printing the board.
+#pragma once
 #include "Tokens.h"
 
 namespace board

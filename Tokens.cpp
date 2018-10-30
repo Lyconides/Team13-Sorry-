@@ -8,7 +8,7 @@ TokenClass::TokenClass() { // default constructor; this is just a placeholder un
 	setLocation(0);
 }
 
-TokenClass::TokenClass(int p) {
+TokenClass::TokenClass(int p) { // starting values
 	Player = p;
 	setStart(true);
 	setSafeZone(false);
@@ -55,7 +55,7 @@ void TokenClass::setPlayer(int p) {
 	Player = p;
 }
 
-// Resetting the token back to its default values
+// Resetting the token back to its default values, ignoring the player number.
 void TokenClass::reset()
 {
 	setStart(true);

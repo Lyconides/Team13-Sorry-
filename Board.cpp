@@ -1,12 +1,12 @@
-// Code for printing the game board, grid, and piece coordinates
-
+// Code for printing the game board, grid of board tiles, and piece coordinates.
 #include <iostream> 
 #include <fstream> 
 #include <string> 
-#include <windows.h>
+#include <windows.h> // used for changing the text colour
 
 #include "Board.h"
 
+// Variables for printing the big board
 std::string line = "-------";
 std::string arro = "------>";
 std::string larro = "<------";
@@ -205,12 +205,12 @@ std::string str191 = "       |";
 std::string str192 = "\t\t\t\t\t\t\t|       |       |       |       |       |       |       |       |       |       |       |       |       |       |       |";
 std::string str193 = "\t\t\t\t\t\t\t|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|";
 
-//remove main function when putting the code into the master branch @Roderick or whoever
-//15 white 
-//12 red 
-//9 blue 
-//10 green 
-//6 yellow
+// Text Colour Numbers
+// White - 15 
+// Red - 12
+// Blue - 9
+// Yellow - 6
+// Green - 10
 
 void board::boardPrint()  // Prints the big board to the screen.
 {
@@ -970,7 +970,7 @@ void board::boardPrint()  // Prints the big board to the screen.
 
 void board::gridPrint() // prints a grid that shows the number of each space on the board.
 {
-	const int LENR(16), LENC(16);
+	const int LENR(16), LENC(16); // the length of width of the grid
 
 	// Grid cordinates. The grid is 16 X 16 (16 rows and 16 columns)
 	std::string grid[LENR][LENC] = { {"016", "017", "018", "019", "020", "021", "022", "023", "024", "025", "026", "027", "028", "029", "030", "031"},
@@ -990,15 +990,17 @@ void board::gridPrint() // prints a grid that shows the number of each space on 
 									 {"002", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y00", "   ", "Y01", "   ", "045"},
 									 {"001", "060", "059", "058", "057", "056", "055", "054", "053", "052", "051", "050", "049", "048", "047", "046"} };
 
-	// The two types of horizontal divides used when printing the grid.
-	std::string hori("----------------------------------------------------------------");
-	std::string shift("\t\t\t\t\t\t\t\t\t\t      ");
 
+	std::string hori("-----------------------------------------------------------------"); // the horizontal divide used to separate different rows
+	std::string shift("\t\t\t\t\t\t\t\t\t\t      "); // shifts the board over so that it's closer to the middle of the screen
+
+	 // printing the grid that shows the number of each location
 	for (int row = 0; row < LENR; row++)
 	{
 		std::cout << shift;
 		std::cout << hori << std::endl;
-		for (int col = 0; col < LENC; col++)
+
+		for (int col = 0; col < LENC; col++) // getting what's stored in the grid index and printing it.
 		{
 			if (col == 0)
 				std::cout << shift;
@@ -1010,12 +1012,10 @@ void board::gridPrint() // prints a grid that shows the number of each space on 
 	std::cout << shift << hori << std::endl;
 }
 
-void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols) // prints the location of each player's pieces.
+void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols) // prints the location of everyone's pieces
 {
-	// int boardTile(0); // the tile number of the space directly in front of a pawn's start
-
 	std::cout << std::endl;
-	for (int i = 0; i < rows; i++) // the row is the player number
+	for (int i = 0; i < rows; i++) // the row + 1 (value of 'i + 1') is the player number (e.g. player '1' is row 0, player '2' is row 1, etc.)
 	{	
 		switch (i + 1) // setting the text colours
 		{
@@ -1038,7 +1038,7 @@ void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols)
 			// Prints the location of the piece
 			if (tokens[i][j].getStart()) // checks to see if the pawn is at it's starting space
 			{
-				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": START ";
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": START "; // all 'START' spaces have the donotion of (first_letter_of_player_colour00)
 				
 				switch (i + 1) // checking to see which player this pawn belongs to so that the proper place is printed.
 				{
@@ -1079,8 +1079,8 @@ void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols)
 			{
 				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": SAFE ";
 
-				// Safe Spaces are represented as numbers 61 (R01, B01, Y01, or G01) to 65 (R05, B05, Y05, G05)
-				switch (i + 1) // checking to see which player the pawn (token) belongs to.
+				// Safe Spaces are represented as numbers 61 (R01, B01, Y01, or G01) to 65 (R05, B05, Y05, G05). Because of this deonotion, 60 must be subtracted from them.
+				switch (i + 1) // checking to see which player the pawn (token) belongs to and printing the proper output.
 				{
 				case 1: // Player 1 (Red)
 					std::cout << "(R0" << tokens[i][j].getLocation() - 60 << ")" << std::endl;
@@ -1096,41 +1096,9 @@ void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols)
 					break;
 				}
 			}
-			else // Prints the location of the pawn. if this is gone into, it means the pawn isn't on any special tile (sliders not withstanding)
+			else // Prints the location of the pawn. If this case is gone into, it means that the pawn isn't on any special tile (sliders not withstanding).
 			{
-				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << tokens[i][j].getLocation() << std::endl; // printing where the pawn (token) is
-				/*
-				// getLocation() returns how many spaces the pawn (token) is away from it's starting location, NOT the number of the tile that it's currently on. This needs to be accounted for using boardTile.
-				switch (tokens[i][j].getPlayer())
-				{
-				// boardTile's value is '1' less than the number of the tile right outside of the player's 'START'. This is because 'START' (and 'HOME') are cosidered '0', and having a location of '1' means they are right outside of their starting location.
-				// Since the location is based off of the 'start' space and not the first tile on the outer board that the pawn (token) goes to once leaving 'start', to be accurate boardTile is one less than the 'tile' outside of 'start'. 
-				case 1: // for Player 1 (Red), the space in front of start is 020
-					boardTile = 19;
-					break;
-				case 2: // for Player 2 (Blue), the space in front of start is 034
-					boardTile = 33;
-					break;
-				case 3: // for Player 3 (Yellow), the space in front of start is 049
-					boardTile = 48;
-					break;
-
-				case 4: // for Player 4 (Green), the space in front of start is 005
-					boardTile = 4;
-					break;
-				}
-
-				if (boardTile + tokens[i][j].getLocation() > 58) // if the pawn's (token's) location surpasses the highest space number (58), it is looped back around
-				{
-					boardTile = boardTile + tokens[i][j].getLocation() - 58;
-				}
-				else
-				{
-					boardTile += tokens[i][j].getLocation();
-				}
-
-				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << boardTile << std::endl; // printing where the pawn (token) is
-				*/
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << tokens[i][j].getLocation() << std::endl; // printing where the pawn (token) is.
 			}
 
 		}

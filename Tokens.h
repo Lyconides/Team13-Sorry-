@@ -1,6 +1,7 @@
+// The header for the tokens class, which is the object for a player's pawn
 #pragma once
 #include "BoardSpaces.h"
-//reference: https://www.geeksforgeeks.org/c-classes-and-objects/
+
 class TokenClass {
 public:
 	// Variables
@@ -12,7 +13,7 @@ public:
 
 	// Constructors
 	TokenClass();
-	TokenClass(int p);
+	TokenClass(int p); // sets the player number along with everything else
 
 	// Getters
 	bool getStart();
@@ -28,7 +29,8 @@ public:
 	void setLocation(int space);
 	void setPlayer(int p);
 
-	void reset(); // resets the token back to it's starting values.
+	// Pawn Reset
+	void reset(); // resets the token back to it's starting values; this does not remove the player number.
 
 private:
 
