@@ -54,8 +54,12 @@ void cardFunc::cardDesc(const unsigned int card) // prints the description of th
 
 void cardFunc::cardGot(TokenClass** & tokens, const int tRows, const int tColumns, BoardSpace* & bps, const int bpsLen, int plyr, int card) //determines what function to call based on what card it recieves
 {
-	// std::string input;
-	int short pawn;
+	std::string input = ""; // user input
+	unsigned short int pawn; // the number of the pawn the player is using
+	unsigned short int pawn2; // the second pawn the player will use in the same turn (card 7 exclusive)
+	unsigned short int share(0); // the amount of spaces the player wants the pawn they're sharing with to move (card 7 exclusive)
+	unsigned short int opnt(0); // saves the opponent the current player selects (used for card 11).
+	
 	bool move = true; // checks to see if the pawn was actually moved. If it's false, then the pawn couldn't be moved, and what the user chose is invalid.
 
 	// Since a '1' or a '2' are needed to move a pawn off of 'START', this checks to see if the player can actually move anywhere.
@@ -74,7 +78,8 @@ void cardFunc::cardGot(TokenClass** & tokens, const int tRows, const int tColumn
 		return;
 	}
 
-	while (move == false)
+MAINLOOP:
+	while (move == false) // the main loop for getting user input.
 	{
 		std::cout << "Enter the number of the pawn you would wish to use: ";
 		// std::getline(std::cin, input);
@@ -115,30 +120,217 @@ void cardFunc::cardGot(TokenClass** & tokens, const int tRows, const int tColumn
 					move = Five(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
 					break;
 			
-				case 7: // two functions
-					// move = (tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
+				case 7: // has special cases
+					do
+					{
+						std::cout << "\nThe '7' card allows you to split it across two pawns. Would you like to do that? Type \'1\' for yes, or \'0\' for no. To choose a different pawn, enter \'-1\'." << std::endl;
+						std::cout << "Choice: ";
+						getline(std::cin, input);
+
+						if (input == "1" || input == "yes" || input == "YES" || input == "y" || input == "Y" || input == "Yes") // the value of '7' will be shared.
+						{
+							std::cout << "\nOkay. What pawn would you like to choose?";
+							std::cout << "Pawn: ";
+							getline(std::cin, input);
+
+							if (input == "1" || input == "2" || input == "3" || input == "4") // if the input is valid.
+							{
+								if (std::stoi(input) == pawn) // if the pawn selects the pawn they already have for move sharing.
+								{
+									std::cout << "\nYou can't share your pawn's moves with itself. I will ask you about sharing with another pawn again." << std::endl;
+									input = "";
+									continue;
+								}
+								
+								pawn2 = std::stoi(input); // getting the pawn number
+								if (tokens[plyr - 1][pawn2 - 1].getStart() == true || tokens[plyr - 1][pawn2 - 1].getHome() == true) // a 7 card cannot be used to move a pawn from 'START', and a pawn at 'HOME' can't move.
+								{
+									std::cout << "\nYou can't use the '7' card to move a pawn off of \'START\', or move it from \'HOME\'. Try again" << std::endl;
+									input = "";
+									continue;
+								}
+
+								std::cout << "\nHow many spaces would you like pawn " << pawn << " to be moved? Keep in mind that the total number of spaces moved cannot exceed the number 7." << std::endl;
+								std::cout << "Spaces: ";
+								getline(std::cin, input);
+
+								if (input == "1" || input == "2" || input == "3" || input == "4" || input == "5" || input == "6" || input == "7") // if the number of moves selected was valid
+								{
+									share = 7 - std::stoi(input); // the amount of spaces being shared with the other pawn.
+
+									if (tokens[plyr - 1][pawn - 1].getLocation() + 7 - share > 65 || tokens[plyr - 1][pawn2 - 1].getLocation() + share > 65 || 7 - std::stoi(input) < 0) // the amount of moves used must total to 7, even when one pawn is moved into 'START'.
+									{
+										std::cout << "\nThe amount of moves used must total to \'7\'. If you want to move a pawn to \'HOME\', the remaining amount of moves must be used up by the other pawn." << std::endl;
+									}
+									else
+									{
+										// Moves both pawns.
+										std::cout << "Okay, so pawn " << pawn << " will move " << (7 - share) << " tiles, and pawn " << pawn2 << " will move " << share << "spaces." << std::endl;
+										Seven(tokens[plyr - 1][pawn - 1], 7 - share, tokens[plyr - 1][pawn2 - 1], share, bps[plyr - 1]);
+									}	
+								}
+
+								else // the amount of spaces attempted would exceed a total of 7.
+								{
+									std::cout << "\nThe number of spaces shared between the two pawns must total up to 7. Try again." << std::endl;
+									input = "";
+									continue;
+								}
+
+							}
+							else if (input == "-1")
+							{
+								std::cout << "\nOkay. I'll will ask you to select a new pawn." << std::endl;
+								goto MAINLOOP;
+							}
+							else // if the input is not valid.
+							{
+								std::cout << "\nI can't tell what you're trying to do. Can you try again?" << std::endl;
+
+							}
+						}
+						else if (input == "0" || input == "no" || input == "NO" || input == "n" || input == "N" || input == "No") // the value of '7' will not be shared.
+						{
+							move = Seven(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
+						}
+						else
+						{
+							std::cout << "\nThat is not an option. Try again.\n" << std::endl;
+							input = "";
+						}
+
+					} while (input == "");
 					break;
 				case 8:
 					move = Eight(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
 					break;
 
-				case 10: // multi-functional
-					// move = Ten(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
+				case 10: // has special cases
+					do
+					{
+						std::cout << "\nWould you like to move \'10\' spaces forward, or \'1\' space back? Enter \'10\' for 10 spaces forward, and \'1\' for 1 space backwards." << std::endl;
+						std::cout << "Decision: ";
+						getline(std::cin, input);
+
+						if (input == "10" || input == "ten" || input == "TEN") // moving the pawn 10 spaces forward.
+						{
+							std::cout << "\nOkay. Moving 10 spaces forward!" << std::endl;
+							move = Ten(tokens[plyr - 1][pawn - 1], 10, bps[plyr - 1]);
+						}
+						else if (input == "1" || input == "-1" || input == "One" || input == "one") // moving the pawn 1 space back.
+						{
+							std::cout << "\nOkay. Moving 1 space backwards!" << std::endl;
+							move = Ten(tokens[plyr - 1][pawn - 1], -1, bps[plyr - 1]);
+						}
+						else
+						{
+							std::cout << "\nThat input was unacceptable. Try again." << std::endl;
+							input = "";
+							continue;
+						}
+					} while (input == "");
 					break;
 
-				case 11: // two functions
+				case 11: // has special cases
+					do
+					{
+						std::cout << "\nYou have three options: move 11 spaces forward (if possible), swap with an opponent's pawn (if possible), or forfeit the turn." << std::endl;
+						std::cout << "Enter \1'\ to move 11 spaces, enter \'2\' to swap places with an enemy pawn, or enter \'3\' to forfeit the turn." << std::endl;
+						std::cout << "Choice: ";
+						getline(std::cin, input);
+
+						if (input == "1" || input == "11") // moving 11 spaces forward.
+						{
+							std::cout << "\nMoving 11 spaces forward!" << std::endl;
+							move = Eleven(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
+						}
+						else if (input == "2" || input == "swap")
+						{
+							std::cout << "\nWhich player has the pawn you would like to switch places with?" << std::endl;
+							std::cout << "Player: ";
+							getline(std::cin, input);
+
+							if (input == "1" || input == "2" || input == "3" || input == "4")
+							{
+								opnt = std::stoi(input); // getting the number of the opponent
+								if (opnt == plyr) // if the player selects themselves 
+								{
+									std::cout << "Y\nou cannot swap places with one of your own pieces. Try again." << std::endl;
+									input = "";
+									continue;
+								}
+
+								// Getting which piece the player would like to swap with.
+								std::cout << "Type in the number of the piece you would like to switch places with. Remember that you can't switch places with a piece in its 'START', 'SAFETY' or 'HOME' zones." << std::endl;
+								std::cout << "Piece: ";
+								getline(std::cin, input);
+
+								if (input == "1" || input == "2" || input == "3" || input == "4")
+								{
+									pawn2 = std::stoi(input); // getting the value of 'input' as an integer to store in pawn2.
+									if (tokens[opnt - 1][pawn2 - 1].getStart() == true || tokens[opnt - 1][pawn2 - 1].getSafeZone() == true || tokens[opnt - 1][pawn2 - 1].getHome() == true) // the pawn can't be swapped with if it's in its 'START', 'SAFETY', or 'HOME' zone.
+									{
+										std::cout << "\nThat pawn cannot be swapped with. You will have to do something else." << std::endl;
+										input = "";
+										continue;
+									}
+									else
+									{
+										std::cout << "Okay, the posiions of Player " << plyr << "'s pawn " << pawn << " and Player " << opnt << "'s pawn will be swapped." << std::endl;
+										move = Eleven(tokens[plyr - 1][pawn - 1], tokens[opnt - 1][pawn2 - 1]);
+									}
+
+								}
+								else
+								{
+									std::cout << "That input was not valid. Please, please, please, please, please, please, please, please use valid inputs only." << std::endl;
+									input = "";
+									continue;
+								}
+							}
+							else
+							{
+								std::cout << "\nI can't use that response. Please follow the rules." << std::endl;
+							}
+						}
+						else if (input == "3" || input == "forfeit" || input == "skip") // skipping the player's turn.
+						{
+							std::cout << "\nAlright. Your turn for this round is being skipped." << std::endl;
+							move = true;
+						}
+						else
+						{
+							std::cout << "\nThat answer doesn't make sense. Try again please." << std::endl;
+							input = "";
+							continue;
+						}
+
+					} while (input == "");
 					break;
+
 				case 12:
 					move = Twelve(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
 					break;
+
 				case 13: // the 'Sorry!' case
 					// move = Sorry(tokens[plyr - 1][pawn - 1], bps[plyr - 1]);
+					for (int i = 0; i < tColumns; i++) // checks to see if the player has any pawns in start to move.
+					{
+						if (tokens[plyr - 1][i].getHome() == true)
+						{
+
+						}
+					}
 					break;
 			}
 
-			if (move == false) // if move is equal to false, then something went wrong
+			if (move == true)
 			{
-				std::cout << "That action is illegal. Try again." << std::endl;
+				std::cout << "\nAction successful!" << std::endl;
+			}
+			else if (move == false) // if move is equal to false, then something went wrong
+			{
+				std::cout << "\nThat action is illegal. Try again." << std::endl;
 				continue;
 			}
 		}
@@ -187,11 +379,7 @@ bool cardFunc::One(TokenClass & p, BoardSpace & b) {					//Card "One"
 }
 
 bool cardFunc::Two(TokenClass & p, BoardSpace & b) {
-	if (p.getHome() == true) // this cannot move if the pawn is at home
-	{
-		return false;
-	}
-	else if (p.getStart() == true)
+	if (p.getStart() == true)
 	{
 		p.setStart(false);
 
