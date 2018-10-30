@@ -3,57 +3,31 @@
 //reference: https://www.geeksforgeeks.org/c-classes-and-objects/
 class TokenClass {
 public:
-	int Player;
-	bool Start;
-	bool SafeZone;
-	bool Home;
-	int Location;
+	// Variables
+	int Player; // the number of the player the piece belongs to
+	bool Start; // determines whether the pawn (token) is on its 'START' space or not.
+	bool SafeZone; // determines whether the pawn (token) is in its safe zone
+	bool Home; // determines whether the pawn is at its 'HOME' zone or not
+	int Location; // the current location of the pawn
 
-	TokenClass() {
-		setStart(true);
-		setSafeZone(false);
-		setHome(false);
-		setLocation(0);
-	}
+	// Constructors
+	TokenClass();
+	TokenClass(int p);
 
-	TokenClass(int p) {
-		Player = p;
-		setStart(true);
-		setSafeZone(false);
-		setHome(false);
-		setLocation(0);
-	}
+	// Getters
+	bool getStart();
+	bool getSafeZone();
+	bool getHome();
+	int getLocation();
+	int getPlayer();
 
-	void setStart(bool start){
-		Start = start;
-	}
-	void setSafeZone(bool safe) {
-		SafeZone = safe;
-	}
-	void setHome(bool home) {
-		Home = home;
-	}
-	void setLocation(int space) {
-		Location = space;
-	}
-	void setPlayer(int p) {
-		Player = p;
-	}
+	// Setters
+	void setStart(bool start);
+	void setSafeZone(bool safe);
+	void setHome(bool home);
+	void setLocation(int space);
+	void setPlayer(int p);
 
-	bool getStart() {
-		return Start;
-	}
-	bool getSafeZone() {
-		return SafeZone;
-	}
-	bool getHome() {
-		return Home;
-	}
-	int getLocation() {
-		return Location;
-	}
-	int getPlayer() {
-		return Player;
-	}
+private:
 
 };

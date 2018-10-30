@@ -1,6 +1,4 @@
-//top part
-
-//Board Game Code (What we have right now) 
+// Code for printing the game board, grid, and piece coordinates
 
 #include <iostream> 
 #include <fstream> 
@@ -214,7 +212,9 @@ std::string str193 = "\t\t\t\t\t\t\t|_______|_______|_______|_______|_______|___
 //10 green 
 //6 yellow
 
-void board::boardPrint() {
+void board::boardPrint()  // Prints the big board to the screen.
+{
+	// The SetCosoleTextAttribute is for changing the text colour when necessary
 	std::cout << str1 << std::endl << str2;
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
@@ -968,30 +968,30 @@ void board::boardPrint() {
 	std::cout << splt << str191 << std::endl << str192 << std::endl << str193 << std::endl;
 }
 
-void board::gridPrint()
+void board::gridPrint() // prints a grid that shows the number of each space on the board.
 {
-	const int LENR(16), LENC(15);
+	const int LENR(16), LENC(16);
 
-	// Grid cordinates. The grid is 16 X 15 (16 rows and 15 columns)
-	std::string grid[LENR][LENC] = { {"016", "017", "018", "019", "020", "021", "022", "023", "024", "025", "026", "027", "028", "029", "030"},
-								 {"015", "   ", "R01", "   ", "R00", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "031"},
-								 {"014", "   ", "R02", "   ", "   ", "   ", "   ", "   ", "B06", "B05", "B04", "B03", "B02", "B01", "032"},
-								 {"013", "   ", "R03", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "033"},
-								 {"012", "   ", "R04", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "B00", "034"},
-								 {"011", "   ", "R05", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "035"},
-								 {"010", "   ", "R06", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "036"},
-								 {"009", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "037"},
-								 {"008", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "038"},
-								 {"007", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y06", "   ", "039"},
-								 {"006", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y05", "   ", "040"},
-								 {"005", "G00", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y04", "   ", "041"},
-								 {"004", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y03", "   ", "042"},
-								 {"003", "G01", "G02", "G03", "G04", "G05", "G06", "   ", "   ", "   ", "   ", "   ", "Y02", "   ", "043"},
-								 {"002", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y00", "   ", "Y01", "   ", "044"},
-								 {"001", "058", "057", "056", "055", "054", "053", "052", "051", "050", "049", "048", "047", "046", "045"} };
+	// Grid cordinates. The grid is 16 X 16 (16 rows and 16 columns)
+	std::string grid[LENR][LENC] = { {"016", "017", "018", "019", "020", "021", "022", "023", "024", "025", "026", "027", "028", "029", "030", "031"},
+									 {"015", "   ", "R01", "   ", "R00", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "032"},
+									 {"014", "   ", "R02", "   ", "   ", "   ", "   ", "   ", "   ", "B06", "B05", "B04", "B03", "B02", "B01", "033"},
+									 {"013", "   ", "R03", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "034"},
+									 {"012", "   ", "R04", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "B00", "035"},
+									 {"011", "   ", "R05", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "036"},
+									 {"010", "   ", "R06", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "037"},
+									 {"009", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "038"},
+									 {"008", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "039"},
+									 {"007", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y06", "   ", "040"},
+									 {"006", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y05", "   ", "041"},
+									 {"005", "G00", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y04", "   ", "042"},
+									 {"004", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y03", "   ", "043"},
+									 {"003", "G01", "G02", "G03", "G04", "G05", "G06", "   ", "   ", "   ", "   ", "   ", "   ", "Y02", "   ", "044"},
+									 {"002", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "Y00", "   ", "Y01", "   ", "045"},
+									 {"001", "060", "059", "058", "057", "056", "055", "054", "053", "052", "051", "050", "049", "048", "047", "046"} };
 
 	// The two types of horizontal divides used when printing the grid.
-	std::string hori("-------------------------------------------------------------");
+	std::string hori("----------------------------------------------------------------");
 	std::string shift("\t\t\t\t\t\t\t\t\t\t      ");
 
 	for (int row = 0; row < LENR; row++)
@@ -1012,10 +1012,11 @@ void board::gridPrint()
 
 void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols) // prints the location of each player's pieces.
 {
+	// int boardTile(0); // the tile number of the space directly in front of a pawn's start
+
 	std::cout << std::endl;
 	for (int i = 0; i < rows; i++) // the row is the player number
-	{
-		
+	{	
 		switch (i + 1) // setting the text colours
 		{
 			case 1: // Player 1 (Red)
@@ -1097,7 +1098,39 @@ void board::locPrint(TokenClass ** tokens, unsigned int rows, unsigned int cols)
 			}
 			else // Prints the location of the pawn. if this is gone into, it means the pawn isn't on any special tile (sliders not withstanding)
 			{
-				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << tokens[i][j].getLocation() << std::endl;
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << tokens[i][j].getLocation() << std::endl; // printing where the pawn (token) is
+				/*
+				// getLocation() returns how many spaces the pawn (token) is away from it's starting location, NOT the number of the tile that it's currently on. This needs to be accounted for using boardTile.
+				switch (tokens[i][j].getPlayer())
+				{
+				// boardTile's value is '1' less than the number of the tile right outside of the player's 'START'. This is because 'START' (and 'HOME') are cosidered '0', and having a location of '1' means they are right outside of their starting location.
+				// Since the location is based off of the 'start' space and not the first tile on the outer board that the pawn (token) goes to once leaving 'start', to be accurate boardTile is one less than the 'tile' outside of 'start'. 
+				case 1: // for Player 1 (Red), the space in front of start is 020
+					boardTile = 19;
+					break;
+				case 2: // for Player 2 (Blue), the space in front of start is 034
+					boardTile = 33;
+					break;
+				case 3: // for Player 3 (Yellow), the space in front of start is 049
+					boardTile = 48;
+					break;
+
+				case 4: // for Player 4 (Green), the space in front of start is 005
+					boardTile = 4;
+					break;
+				}
+
+				if (boardTile + tokens[i][j].getLocation() > 58) // if the pawn's (token's) location surpasses the highest space number (58), it is looped back around
+				{
+					boardTile = boardTile + tokens[i][j].getLocation() - 58;
+				}
+				else
+				{
+					boardTile += tokens[i][j].getLocation();
+				}
+
+				std::cout << "Player " << i + 1 << " | Pawn " << j + 1 << ": " << boardTile << std::endl; // printing where the pawn (token) is
+				*/
 			}
 
 		}
